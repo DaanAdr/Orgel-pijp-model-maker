@@ -9,4 +9,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ACadSharp" Version="1.0.8" />
+  </ItemGroup>
+
 </Project>

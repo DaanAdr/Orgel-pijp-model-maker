@@ -27,4 +27,19 @@ public partial class MainWindow : Window
         var logic = new BtnSaveLogic();
         logic.SaveFile();
     }
+
+    private void btnCreateSquare_Click(object sender, RoutedEventArgs e)
+    {
+        string txbText = txbLength.Text;
+        int length = int.Parse(txbText);
+
+        var logic = new btnCreateSquareLogic();
+        logic.CreateSquareModel(length);
+    }
+
+    private void btnRead_Click(object sender, RoutedEventArgs e)
+    {
+        var Logic = new btnReadLogic();
+        Logic.ReadFile();
+    }
 }
