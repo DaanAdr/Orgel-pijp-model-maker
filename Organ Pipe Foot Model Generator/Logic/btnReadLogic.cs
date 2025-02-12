@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Win32;
-using System.Windows.Controls;
+﻿using ACadSharp;
 using ACadSharp.IO;
-using ACadSharp;
-using System.Xml.Linq;
+using Microsoft.Win32;
 
 namespace Organ_Pipe_Foot_Model_Generator.Logic
 {
