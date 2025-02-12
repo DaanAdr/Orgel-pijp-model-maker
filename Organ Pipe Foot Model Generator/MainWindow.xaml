@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Button x:Name="btnSaveFile" Content="Sla op" HorizontalAlignment="Left" Margin="25,27,0,0" VerticalAlignment="Top" Click="btnSaveFile_Click"/>
 
     </Grid>
 </Window>
