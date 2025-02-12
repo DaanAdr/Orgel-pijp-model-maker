@@ -44,4 +44,21 @@ public partial class MainWindow : Window
         var Logic = new btnReadLogic();
         Logic.ReadFile();
     }
+
+    #region Prevent input from being non numeric
+    private void txbTopDiameter_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+    {
+        e.Handled = !InputValidation.InputIsNumericOnly(e.Text);
+    }
+
+    private void txbBottomDiameter_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+    {
+        e.Handled = !InputValidation.InputIsNumericOnly(e.Text);
+    }
+
+    private void txbHeight_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+    {
+        e.Handled = !InputValidation.InputIsNumericOnly(e.Text);
+    }
+    #endregion
 }

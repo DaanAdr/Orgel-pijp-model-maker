@@ -7,7 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="btnSaveFile" Content="Sla op" HorizontalAlignment="Left" Margin="30,144,0,0" VerticalAlignment="Top" Click="btnSaveFile_Click" RenderTransformOrigin="0.608,4.127"/>
         <Label x:Name="lblLength" Content="Geef lengte van het vierkant aan in mm:" HorizontalAlignment="Left" Margin="23,25,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txbLength" HorizontalAlignment="Left" Margin="249,29,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120">
             <TextBox.BindingGroup>
@@ -16,6 +15,12 @@
         </TextBox>
         <Button x:Name="btnCreateSquare" Content="Creeer model voor vierkant" HorizontalAlignment="Left" Margin="30,56,0,0" VerticalAlignment="Top" Click="btnCreateSquare_Click"/>
         <Button x:Name="btnRead" Content="Lees bestand" HorizontalAlignment="Left" Margin="114,144,0,0" VerticalAlignment="Top" Click="btnRead_Click"/>
+        <Label x:Name="lblTopDiameter" Content="Bovendiameter:" HorizontalAlignment="Left" Margin="438,25,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblBottomDiameter" Content="Onderdiameter:" HorizontalAlignment="Left" Margin="438,51,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.504,1.427"/>
+        <Label x:Name="lblHeight" Content="Hoogte: " HorizontalAlignment="Left" Margin="438,77,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.46,-0.923"/>
+        <TextBox x:Name="txbTopDiameter" HorizontalAlignment="Left" Margin="552,29,0,0" TextWrapping="Wrap" Text="500" VerticalAlignment="Top" Width="120" PreviewTextInput="txbTopDiameter_PreviewTextInput"/>
+        <TextBox x:Name="txbBottomDiameter" HorizontalAlignment="Left" Margin="552,57,0,0" TextWrapping="Wrap" Text="1500" VerticalAlignment="Top" Width="120" PreviewTextInput="txbBottomDiameter_PreviewTextInput"/>
+        <TextBox x:Name="txbHeight" HorizontalAlignment="Left" Margin="552,81,0,0" TextWrapping="Wrap" Text="2000" VerticalAlignment="Top" Width="120" PreviewTextInput="txbHeight_PreviewTextInput"/>
 
     </Grid>
 </Window>
