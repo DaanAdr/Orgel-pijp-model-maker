@@ -7,6 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Button x:Name="btnSaveFile" Content="Sla op" HorizontalAlignment="Left" Margin="30,144,0,0" VerticalAlignment="Top" Click="btnSaveFile_Click" RenderTransformOrigin="0.608,4.127"/>
+        <Label x:Name="lblLength" Content="Geef lengte van het vierkant aan in mm:" HorizontalAlignment="Left" Margin="23,25,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbLength" HorizontalAlignment="Left" Margin="249,29,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120">
+            <TextBox.BindingGroup>
+                <BindingGroup/>
+            </TextBox.BindingGroup>
+        </TextBox>
+        <Button x:Name="btnCreateSquare" Content="Creeer model voor vierkant" HorizontalAlignment="Left" Margin="30,56,0,0" VerticalAlignment="Top" Click="btnCreateSquare_Click"/>
+        <Button x:Name="btnRead" Content="Lees bestand" HorizontalAlignment="Left" Margin="114,144,0,0" VerticalAlignment="Top" Click="btnRead_Click"/>
 
     </Grid>
 </Window>
