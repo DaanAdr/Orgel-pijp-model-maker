@@ -21,5 +21,19 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
             //Assert
             Assert.Equal(expected: 206.2, actual: roundedLength);
         }
+
+        [Fact]
+        public void CalculateLengthInnerDiameter_Returns157dot1()
+        {
+            //Arrange
+            PipeFootMeasurements measurements = new PipeFootMeasurements(_topDiameter, _bottonDiameter, _height);
+
+            //Act
+            double lengthSlantedSide = measurements.CalculateLengthInnerDiameter();
+            double roundedLength = Math.Round(lengthSlantedSide, 1);
+
+            //Assert
+            Assert.Equal(expected: 157.1, actual: roundedLength);
+        }
     }
 }

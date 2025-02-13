@@ -6,14 +6,13 @@
         public double BottomDiameter { get; }
         public double Height { get; }
         public double LengthSlantedSide { get; private set; }
+        public double LengthInnerDiameter { get; private set; }
 
         public PipeFootMeasurements(double topDiameter, double bottomDiameter, double height)
         {
             TopDiameter = topDiameter;
             BottomDiameter = bottomDiameter;
             Height = height;
-
-            SetLengthSlantedSide();
         }
 
         public double CalculateLengthSlantedSide()
@@ -28,9 +27,15 @@
             return lengthSlantedSide;
         }
 
-        private void SetLengthSlantedSide()
+        public void SetCalculatedMeasurements()
         {
             this.LengthSlantedSide = CalculateLengthSlantedSide();
+            this.LengthInnerDiameter = CalculateLengthInnerDiameter();
+        }
+
+        public double CalculateLengthInnerDiameter()
+        {
+            return TopDiameter * Math.PI;
         }
     }
 }
