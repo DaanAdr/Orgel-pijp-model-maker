@@ -9,87 +9,18 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
         public readonly double _height = 200;
 
         [Fact]
-        public void CalculateLengthSlantedSide_Returns206dot2()
+        public void CalculateMeasurements()
         {
-            //Arrange
+            //Act
             PipeFootMeasurements measurements = new PipeFootMeasurements(_topDiameter, _bottonDiameter, _height);
 
-            //Act
-            double lengthSlantedSide = measurements.CalculateLengthSlantedSide();
-            double roundedLength = Math.Round(lengthSlantedSide, 1);
-
             //Assert
-            Assert.Equal(expected: 206.2, actual: roundedLength);
-        }
-
-        [Fact]
-        public void CalculateLengthInnerDiameter_Returns157dot1()
-        {
-            //Arrange
-            PipeFootMeasurements measurements = new PipeFootMeasurements(_topDiameter, _bottonDiameter, _height);
-
-            //Act
-            double lengthSlantedSide = measurements.CalculateLengthInnerDiameter();
-            double roundedLength = Math.Round(lengthSlantedSide, 1);
-
-            //Assert
-            Assert.Equal(expected: 157.1, actual: roundedLength);
-        }
-
-        [Fact]
-        public void CalculateLengthOuterDiameter_Returns471dot2()
-        {
-            //Arrange
-            PipeFootMeasurements measurements = new PipeFootMeasurements(_topDiameter, _bottonDiameter, _height);
-
-            //Act
-            double lengthSlantedSide = measurements.CalculateLengthOuterDiameter();
-            double roundedLength = Math.Round(lengthSlantedSide, 1);
-
-            //Assert
-            Assert.Equal(expected: 471.2, actual: roundedLength);
-        }
-
-        [Fact]
-        public void CalculateSmallRadius_returns103dot1()
-        {
-            //Arrange
-            PipeFootMeasurements measurements = new PipeFootMeasurements(_topDiameter, _bottonDiameter, _height);
-
-            //Act
-            double lengthSlantedSide = measurements.CalculateSmallRadius();
-            double roundedLength = Math.Round(lengthSlantedSide, 1);
-
-            //Assert
-            Assert.Equal(expected: 103.1, actual: roundedLength);
-        }
-
-        [Fact]
-        public void CalculateLargeRadius_returns309dot2()
-        {
-            //Arrange
-            PipeFootMeasurements measurements = new PipeFootMeasurements(_topDiameter, _bottonDiameter, _height);
-
-            //Act
-            double lengthSlantedSide = measurements.CalculateLargeRadius();
-            double roundedLength = Math.Round(lengthSlantedSide, 1);
-
-            //Assert
-            Assert.Equal(expected: 309.2, actual: roundedLength);
-        }
-
-        [Fact]
-        public void CalculateCornerDegrees_returns87dot3()
-        {
-            //Arrange
-            PipeFootMeasurements measurements = new PipeFootMeasurements(_topDiameter, _bottonDiameter, _height);
-
-            //Act
-            double lengthSlantedSide = measurements.CalculateCornerDegrees();
-            double roundedLength = Math.Round(lengthSlantedSide, 1);
-
-            //Assert
-            Assert.Equal(expected: 87.3, actual: roundedLength);
+            Assert.Equal(expected: 206.2, actual: measurements.LengthSlantedSide);
+            Assert.Equal(expected: 157.1, actual: measurements.LengthInnerDiameter);
+            Assert.Equal(expected: 471.2, actual: measurements.LengthOuterDiameter);
+            Assert.Equal(expected: 103.1, actual: measurements.SmallRadius);
+            Assert.Equal(expected: 309.3, actual: measurements.LargeRadius);
+            Assert.Equal(expected: 87.3, actual: measurements.CornerInDegrees);
         }
     }
 }

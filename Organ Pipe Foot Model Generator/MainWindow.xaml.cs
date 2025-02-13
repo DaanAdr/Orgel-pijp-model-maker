@@ -64,7 +64,6 @@ public partial class MainWindow : Window
         double height = double.Parse(txbHeight.Text);
 
         PipeFootMeasurements pipeFootMeasurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height);
-        pipeFootMeasurements.SetCalculatedMeasurements();
 
         //Display calculated measurements
         txbLengthSlantedSide.Text = pipeFootMeasurements.LengthSlantedSide.ToString();

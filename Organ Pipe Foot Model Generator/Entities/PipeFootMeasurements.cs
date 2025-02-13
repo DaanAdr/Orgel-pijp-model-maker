@@ -12,20 +12,21 @@
         public double LargeRadius { get; private set; }
         public double CornerInDegrees { get; private set; }
 
-        /// <summary>
-        /// Initialize the object with only the given values. In order to calculate and set the rest, use: SetCalculatedMeasurements
-        /// </summary>
-        /// <param name="topDiameter"></param>
-        /// <param name="bottomDiameter"></param>
-        /// <param name="height"></param>
         public PipeFootMeasurements(double topDiameter, double bottomDiameter, double height)
         {
-            TopDiameter = topDiameter;
-            BottomDiameter = bottomDiameter;
-            Height = height;
+            TopDiameter = Math.Round(topDiameter, 1);
+            BottomDiameter = Math.Round(bottomDiameter, 1);
+            Height = Math.Round(height, 1);
+
+            LengthSlantedSide = CalculateLengthSlantedSide();
+            LengthInnerDiameter = CalculateLengthInnerDiameter();
+            LengthOuterDiameter = CalculateLengthOuterDiameter();
+            SmallRadius = CalculateSmallRadius();
+            LargeRadius = CalculateLargeRadius();
+            CornerInDegrees = CalculateCornerDegrees();
         }
 
-        public double CalculateLengthSlantedSide()
+        private double CalculateLengthSlantedSide()
         {
             double bottomDiameterHalved = BottomDiameter / 2;
             double topDiameterHalved = TopDiameter / 2;
@@ -34,46 +35,40 @@
             double heightSquared = Height * Height;
             double lengthSlantedSide = Math.Sqrt(halvedBottomMinusHalvedTopSquared + heightSquared);
 
-            return lengthSlantedSide;
+            return Math.Round(lengthSlantedSide, 1); ;
         }
 
-        public void SetCalculatedMeasurements()
+        private double CalculateLengthInnerDiameter()
         {
-            this.LengthSlantedSide = CalculateLengthSlantedSide();
-            this.LengthInnerDiameter = CalculateLengthInnerDiameter();
-            this.LengthOuterDiameter = CalculateLengthOuterDiameter();
-            this.SmallRadius = CalculateSmallRadius();
-            this.LargeRadius = CalculateLargeRadius();
-            this.CornerInDegrees = CalculateCornerDegrees();
+            double topDiameterTimesPi = TopDiameter * Math.PI;
+            return Math.Round(topDiameterTimesPi, 1);
         }
 
-        public double CalculateLengthInnerDiameter()
+        private double CalculateLengthOuterDiameter()
         {
-            return TopDiameter * Math.PI;
+            double bottomDiameterTimesPi = BottomDiameter * Math.PI;
+            return Math.Round(bottomDiameterTimesPi, 1);
         }
 
-        public double CalculateLengthOuterDiameter()
-        {
-            return BottomDiameter * Math.PI;
-        }
-
-        public double CalculateSmallRadius()
+        private double CalculateSmallRadius()
         {
             double lengthInnerDiameterTimesLengthSlantedSide = LengthInnerDiameter * LengthSlantedSide;
             double lengthOuterDiameterMinusLengthInnerDiameter = LengthOuterDiameter - LengthInnerDiameter;
-
-            return lengthInnerDiameterTimesLengthSlantedSide / lengthOuterDiameterMinusLengthInnerDiameter;
+            double divide = lengthInnerDiameterTimesLengthSlantedSide / lengthOuterDiameterMinusLengthInnerDiameter;
+            return Math.Round(divide, 1);
         }
 
-        public double CalculateLargeRadius()
+        private double CalculateLargeRadius()
         {
-            return SmallRadius + LengthSlantedSide;
+            double smallRadiusPlusLengthSlantedSide = SmallRadius + LengthSlantedSide;
+            return Math.Round(smallRadiusPlusLengthSlantedSide, 1);
         }
 
-        public double CalculateCornerDegrees()
+        private double CalculateCornerDegrees()
         {
             double lengthInnerDiameterDividedBySmallRadius = LengthInnerDiameter / SmallRadius;
-            return (lengthInnerDiameterDividedBySmallRadius * 180) / Math.PI;
+            double sumOutcome = (lengthInnerDiameterDividedBySmallRadius * 180) / Math.PI;
+            return Math.Round(sumOutcome, 1);
         }
     }
 }
