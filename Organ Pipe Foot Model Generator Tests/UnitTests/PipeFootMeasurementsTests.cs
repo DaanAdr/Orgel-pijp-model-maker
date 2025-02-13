@@ -63,5 +63,19 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
             //Assert
             Assert.Equal(expected: 103.1, actual: roundedLength);
         }
+
+        [Fact]
+        public void CalculateLargeRadius_returns309dot2()
+        {
+            //Arrange
+            PipeFootMeasurements measurements = new PipeFootMeasurements(_topDiameter, _bottonDiameter, _height);
+
+            //Act
+            double lengthSlantedSide = measurements.CalculateLargeRadius();
+            double roundedLength = Math.Round(lengthSlantedSide, 1);
+
+            //Assert
+            Assert.Equal(expected: 309.2, actual: roundedLength);
+        }
     }
 }

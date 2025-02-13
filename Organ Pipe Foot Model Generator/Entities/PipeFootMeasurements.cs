@@ -9,6 +9,7 @@
         public double LengthInnerDiameter { get; private set; }
         public double LengthOuterDiameter { get; private set; }
         public double SmallRadius { get; private set; }
+        public double LargeRadius { get; private set; }
 
         public PipeFootMeasurements(double topDiameter, double bottomDiameter, double height)
         {
@@ -35,6 +36,7 @@
             this.LengthInnerDiameter = CalculateLengthInnerDiameter();
             this.LengthOuterDiameter = CalculateLengthOuterDiameter();
             this.SmallRadius = CalculateSmallRadius();
+            this.LargeRadius = CalculateLargeRadius();
         }
 
         public double CalculateLengthInnerDiameter()
@@ -53,6 +55,11 @@
             double lengthOuterDiameterMinusLengthInnerDiameter = LengthOuterDiameter - LengthInnerDiameter;
 
             return lengthInnerDiameterTimesLengthSlantedSide / lengthOuterDiameterMinusLengthInnerDiameter;
+        }
+
+        public double CalculateLargeRadius()
+        {
+            return SmallRadius + LengthSlantedSide;
         }
     }
 }
