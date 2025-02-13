@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Microsoft.Win32;
+using Organ_Pipe_Foot_Model_Generator.Entities;
 using Organ_Pipe_Foot_Model_Generator.Logic;
 
 namespace Organ_Pipe_Foot_Model_Generator;
@@ -61,4 +62,16 @@ public partial class MainWindow : Window
         e.Handled = !InputValidation.InputIsNumericOnly(e.Text);
     }
     #endregion
+
+    private void btnCalculatePipeFootMeasurements_Click(object sender, RoutedEventArgs e)
+    {
+        double topDiameter = double.Parse(txbTopDiameter.Text);
+        double bottomDiameter = double.Parse(txbBottomDiameter.Text);
+        double height = double.Parse(txbHeight.Text);
+
+        PipeFootMeasurements pipeFootMeasurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height);
+
+        //Display calculated measurements
+        txbLengthSlantedSide.Text = pipeFootMeasurements.LengthSlantedSide.ToString();
+    }
 }
