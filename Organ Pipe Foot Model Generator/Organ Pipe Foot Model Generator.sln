@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35806.99 d17.13
+VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Organ Pipe Foot Model Generator", "Organ Pipe Foot Model Generator.csproj", "{B1C4A2B2-6E77-4E61-A806-AC1D21EBA1B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Organ Pipe Foot Model Generator Tests", "..\Organ Pipe Foot Model Generator Tests\Organ Pipe Foot Model Generator Tests.csproj", "{6EDAC60B-4D8E-4BFE-ABEE-469086BAAEAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B1C4A2B2-6E77-4E61-A806-AC1D21EBA1B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1C4A2B2-6E77-4E61-A806-AC1D21EBA1B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1C4A2B2-6E77-4E61-A806-AC1D21EBA1B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EDAC60B-4D8E-4BFE-ABEE-469086BAAEAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EDAC60B-4D8E-4BFE-ABEE-469086BAAEAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EDAC60B-4D8E-4BFE-ABEE-469086BAAEAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EDAC60B-4D8E-4BFE-ABEE-469086BAAEAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
