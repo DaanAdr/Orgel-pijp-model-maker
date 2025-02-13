@@ -68,5 +68,10 @@ public partial class MainWindow : Window
 
         //Display calculated measurements
         txbLengthSlantedSide.Text = pipeFootMeasurements.LengthSlantedSide.ToString();
+        txbLengthInnerDiameter.Text = pipeFootMeasurements.LengthInnerDiameter.ToString();
+        txbLengthOuterDiameter.Text = pipeFootMeasurements.LengthOuterDiameter.ToString();
+        txbSmallRadius.Text = pipeFootMeasurements.SmallRadius.ToString();
+        txbLargeRadius.Text = pipeFootMeasurements.LargeRadius.ToString();
+        txbCornerDegrees.Text = pipeFootMeasurements.CornerInDegrees.ToString();
     }
 }

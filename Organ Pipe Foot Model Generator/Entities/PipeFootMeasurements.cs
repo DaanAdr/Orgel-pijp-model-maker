@@ -12,6 +12,12 @@
         public double LargeRadius { get; private set; }
         public double CornerInDegrees { get; private set; }
 
+        /// <summary>
+        /// Initialize the object with only the given values. In order to calculate and set the rest, use: SetCalculatedMeasurements
+        /// </summary>
+        /// <param name="topDiameter"></param>
+        /// <param name="bottomDiameter"></param>
+        /// <param name="height"></param>
         public PipeFootMeasurements(double topDiameter, double bottomDiameter, double height)
         {
             TopDiameter = topDiameter;
