@@ -40,12 +40,6 @@ public partial class MainWindow : Window
         logic.CreateSquareModel(length, filePath);
     }
 
-    private void btnRead_Click(object sender, RoutedEventArgs e)
-    {
-        var Logic = new btnReadLogic();
-        Logic.ReadFile();
-    }
-
     #region Prevent input from being non numeric
     private void txbTopDiameter_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
     {
