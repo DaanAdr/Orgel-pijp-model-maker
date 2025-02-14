@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Media3D;
-using ACadSharp.Entities;
+﻿using ACadSharp.Entities;
 
 namespace Organ_Pipe_Foot_Model_Generator.Entities
 {
@@ -12,6 +6,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
     {
         public Line Bottomline { get; private set; }
         public Arc SmallArc { get; private set; }
+        public Arc LargeArc { get; private set; }
         private double XStandoffFromOrigin { get; set; }
         private double YStandoffFromOrigin { get; set; }
         private CSMath.XYZ CenterPointForRadii { get; set; }
@@ -32,6 +27,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             DetermineCenterPoint();
             DetermineStartAngle();
             DetermineSmallArc();
+            DetermineLargeArc();
         }
 
         private void DetermineBottomline()
@@ -82,6 +78,17 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public Point GetCenterPoint()
         {
             return new Point(CenterPointForRadii);
+        }
+
+        private void DetermineLargeArc()
+        {
+            LargeArc = new Arc
+            {
+                Center = CenterPointForRadii,
+                Radius = Measurements.LargeRadius,
+                StartAngle = StartAngleInRadians,
+                EndAngle = EndAngleInRadians
+            };
         }
     }
 }
