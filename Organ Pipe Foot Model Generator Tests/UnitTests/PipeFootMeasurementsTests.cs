@@ -14,7 +14,7 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
             double height = 200;
 
             //Act
-            PipeFootTemplate pipeFootTemplate = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
+            InvertedPipeFootTemplate pipeFootTemplate = new InvertedPipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
             PipeFootMeasurements measurements = pipeFootTemplate.Measurements;
 
             //Assert
