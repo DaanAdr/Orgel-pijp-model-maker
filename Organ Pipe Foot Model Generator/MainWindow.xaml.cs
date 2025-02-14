@@ -1,7 +1,6 @@
 ﻿using System.Windows;
-using ACadSharp.Entities;
-using ACadSharp.IO;
 using ACadSharp;
+using ACadSharp.IO;
 using Microsoft.Win32;
 using Organ_Pipe_Foot_Model_Generator.Entities;
 using Organ_Pipe_Foot_Model_Generator.Logic;
@@ -74,7 +73,6 @@ public partial class MainWindow : Window
         //Add lines directly to the document
         doc.Entities.Add(pipeFootTemplate.Bottomline);
         doc.Entities.Add(pipeFootTemplate.SmallArc);
-        doc.Entities.Add(pipeFootTemplate.GetCenterPoint());
         doc.Entities.Add(pipeFootTemplate.LargeArc);
         doc.Entities.Add(pipeFootTemplate.Slantedline);
 

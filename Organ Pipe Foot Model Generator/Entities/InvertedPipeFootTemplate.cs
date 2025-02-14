@@ -1,9 +1,8 @@
 ﻿using ACadSharp.Entities;
-using static ACadSharp.Objects.Evaluations.BlockVisibilityParameter;
 
 namespace Organ_Pipe_Foot_Model_Generator.Entities
 {
-    public class PipeFootTemplate
+    public class InvertedPipeFootTemplate
     {
         public Line Bottomline { get; private set; }
         public Arc SmallArc { get; private set; }
@@ -17,7 +16,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         private double StartAngleInRadians { get; set; }
         public PipeFootMeasurements Measurements { get; private set; }
 
-        public PipeFootTemplate(double xStandoffFromOrigin, double yStandoffFromOrigin, double topDiameter, double bottomDiameter, double height)
+        public InvertedPipeFootTemplate(double xStandoffFromOrigin, double yStandoffFromOrigin, double topDiameter, double bottomDiameter, double height)
         {
             Measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height);
             XStandoffFromOrigin = xStandoffFromOrigin;
@@ -75,12 +74,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 
             double startAngleInRadians = startAngleInDegrees * (Math.PI / 180);
             StartAngleInRadians = startAngleInRadians;
-        }
-
-        //TODO: Remove after testing
-        public Point GetCenterPoint()
-        {
-            return new Point(CenterPointForRadii);
         }
 
         private void DetermineLargeArc()
