@@ -15,8 +15,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         private double XStandoffFromOrigin { get; set; }
         private double YStandoffFromOrigin { get; set; }
         private CSMath.XYZ CenterPointForRadii { get; set; }
-        private readonly double StartAngle = 0;
-        private double EndAngle { get; set; }
+        private readonly double EndAngleInDegrees = 180;
+        private double EndAngleInRadians { get; set; }
+        private double StartAngleInRadians { get; set; }
         public PipeFootMeasurements Measurements { get; private set; }
 
         public PipeFootTemplate(double xStandoffFromOrigin, double yStandoffFromOrigin, double topDiameter, double bottomDiameter, double height)
@@ -25,9 +26,11 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             XStandoffFromOrigin = xStandoffFromOrigin;
             YStandoffFromOrigin = yStandoffFromOrigin;
 
+            EndAngleInRadians = EndAngleInDegrees * (Math.PI / 180);
+
             DetermineBottomline();
             DetermineCenterPoint();
-            DetermineEndAngle();
+            DetermineStartAngle();
             DetermineSmallArc();
         }
 
@@ -45,7 +48,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         private void DetermineCenterPoint()
         {
             //The English word for "straal" is radius. So I don't have to halve the TopDiameter
-            double xCoordinateForCenterPoint = Bottomline.StartPoint.X - Measurements.SmallRadius;
+            double xCoordinateForCenterPoint = Bottomline.EndPoint.X + Measurements.SmallRadius;
 
             CenterPointForRadii = new CSMath.XYZ(x: xCoordinateForCenterPoint, y: YStandoffFromOrigin, z: 0);
         }
@@ -56,23 +59,23 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             {
                 Center = CenterPointForRadii,
                 Radius = Measurements.SmallRadius,
-                StartAngle = StartAngle,
-                EndAngle = EndAngle
+                StartAngle = StartAngleInRadians,
+                EndAngle = EndAngleInRadians
             };
         }
 
-        private void DetermineEndAngle()
+        private void DetermineStartAngle()
         {
-            double endAngle = StartAngle + Measurements.CornerInDegrees;
+            double startAngleInDegrees = EndAngleInDegrees - Measurements.CornerInDegrees;
 
+            //TODO: Determine if the wrap around logic is necessary
             //if (endAngle < 0)
             //{
             //    endAngle += 360;
             //}
 
-            double radians = endAngle * (Math.PI / 180);
-            //EndAngle = endAngle;
-            EndAngle = radians;
+            double startAngleInRadians = startAngleInDegrees * (Math.PI / 180);
+            StartAngleInRadians = startAngleInRadians;
         }
 
         //TODO: Remove after testing
