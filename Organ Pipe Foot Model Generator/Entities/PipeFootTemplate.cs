@@ -1,4 +1,5 @@
 ﻿using ACadSharp.Entities;
+using static ACadSharp.Objects.Evaluations.BlockVisibilityParameter;
 
 namespace Organ_Pipe_Foot_Model_Generator.Entities
 {
@@ -7,6 +8,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public Line Bottomline { get; private set; }
         public Arc SmallArc { get; private set; }
         public Arc LargeArc { get; private set; }
+        public Line Slantedline { get; private set; }
         private double XStandoffFromOrigin { get; set; }
         private double YStandoffFromOrigin { get; set; }
         private CSMath.XYZ CenterPointForRadii { get; set; }
@@ -28,6 +30,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             DetermineStartAngle();
             DetermineSmallArc();
             DetermineLargeArc();
+            DetermineSlantedline();
         }
 
         private void DetermineBottomline()
@@ -88,6 +91,32 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
                 Radius = Measurements.LargeRadius,
                 StartAngle = StartAngleInRadians,
                 EndAngle = EndAngleInRadians
+            };
+        }
+
+        private void DetermineSlantedline()
+        {
+            double centerX = CenterPointForRadii.X;
+            double centerY = CenterPointForRadii.Y;
+            double angleInDegrees = Measurements.CornerInDegrees;
+            double invertedAngle = EndAngleInDegrees - angleInDegrees;
+            double length = Measurements.LargeRadius;
+
+            // Convert angle to radians
+            double angleInRadians = invertedAngle * (Math.PI / 180);
+
+            // Calculate new start point
+            double newStartX = centerX + Measurements.SmallRadius * Math.Cos(angleInRadians);
+            double newStartY = centerY + Measurements.SmallRadius * Math.Sin(angleInRadians);
+
+            // Calculate endpoint
+            double endX = centerX + length * Math.Cos(angleInRadians);
+            double endY = centerY + length * Math.Sin(angleInRadians);
+
+            Slantedline = new Line
+            {
+                StartPoint = new CSMath.XYZ(x: newStartX, y: newStartY, z: 0),
+                EndPoint = new CSMath.XYZ(endX, endY, 0)
             };
         }
     }

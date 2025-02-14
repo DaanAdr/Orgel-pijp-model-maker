@@ -76,6 +76,7 @@ public partial class MainWindow : Window
         doc.Entities.Add(pipeFootTemplate.SmallArc);
         doc.Entities.Add(pipeFootTemplate.GetCenterPoint());
         doc.Entities.Add(pipeFootTemplate.LargeArc);
+        doc.Entities.Add(pipeFootTemplate.Slantedline);
 
         // Save the document using DxfWriter
 
