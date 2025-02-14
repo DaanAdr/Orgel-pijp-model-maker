@@ -26,6 +26,7 @@
         <TextBox x:Name="txbLargeRadius" HorizontalAlignment="Left" Margin="154,253,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
         <Label x:Name="lblCornerDegrees" Content="Graden hoek:" HorizontalAlignment="Left" Margin="13,275,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txbCornerDegrees" HorizontalAlignment="Left" Margin="154,279,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+        <Button x:Name="btnSaveModel" Content="Model opslaan" HorizontalAlignment="Left" Margin="13,317,0,0" VerticalAlignment="Top" Click="btnSaveModel_Click" IsEnabled="False"/>
 
     </Grid>
 </Window>

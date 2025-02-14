@@ -12,6 +12,8 @@ namespace Organ_Pipe_Foot_Model_Generator;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private PipeFootTemplate _template;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -40,8 +42,8 @@ public partial class MainWindow : Window
         double bottomDiameter = double.Parse(txbBottomDiameter.Text);
         double height = double.Parse(txbHeight.Text);
 
-        PipeFootTemplate pipeFootTemplate = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
-        PipeFootMeasurements pipeFootMeasurements = pipeFootTemplate.Measurements;
+        _template = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
+        PipeFootMeasurements pipeFootMeasurements = _template.Measurements;
 
         //Display calculated measurements
         txbLengthSlantedSide.Text = pipeFootMeasurements.LengthSlantedSide.ToString();
@@ -51,6 +53,11 @@ public partial class MainWindow : Window
         txbLargeRadius.Text = pipeFootMeasurements.LargeRadius.ToString();
         txbCornerDegrees.Text = pipeFootMeasurements.CornerInDegrees.ToString();
 
+        btnSaveModel.IsEnabled = true;
+    }
+
+    private void btnSaveModel_Click(object sender, RoutedEventArgs e)
+    {
         //Save file for model
         string filePath = string.Empty;
 
@@ -71,10 +78,10 @@ public partial class MainWindow : Window
         CadDocument doc = new CadDocument();
 
         //Add lines directly to the document
-        doc.Entities.Add(pipeFootTemplate.Bottomline);
-        doc.Entities.Add(pipeFootTemplate.SmallArc);
-        doc.Entities.Add(pipeFootTemplate.LargeArc);
-        doc.Entities.Add(pipeFootTemplate.Slantedline);
+        doc.Entities.Add(_template.Bottomline);
+        doc.Entities.Add(_template.SmallArc);
+        doc.Entities.Add(_template.LargeArc);
+        doc.Entities.Add(_template.Slantedline);
 
         // Save the document using DxfWriter
 
