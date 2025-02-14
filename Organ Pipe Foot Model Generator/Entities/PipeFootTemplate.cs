@@ -44,18 +44,8 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 
         private void DetermineCenterPoint()
         {
-            double heightTopDiameterToSlantedSidesIntersectionPoint = 
-                (Measurements.BottomDiameter - Measurements.TopDiameter) * Measurements.Height / Measurements.BottomDiameter;
-
-            double additionalLength = Math.Round(heightTopDiameterToSlantedSidesIntersectionPoint, 1);
-            double additionalLengthSquared = additionalLength * additionalLength;
-
-            double shortSide = Measurements.TopDiameter / 2;
-            double shortSideSquared = shortSide * shortSide;
-
-            double additionalSlantLength = Math.Sqrt(additionalLengthSquared + shortSideSquared);
-
-            double xCoordinateForCenterPoint = Bottomline.StartPoint.X - additionalSlantLength;
+            //The English word for "straal" is radius. So I don't have to halve the TopDiameter
+            double xCoordinateForCenterPoint = Bottomline.StartPoint.X - Measurements.SmallRadius;
 
             CenterPointForRadii = new CSMath.XYZ(x: xCoordinateForCenterPoint, y: YStandoffFromOrigin, z: 0);
         }
