@@ -1,4 +1,7 @@
 ﻿using System.Windows;
+using ACadSharp.Entities;
+using ACadSharp.IO;
+using ACadSharp;
 using Microsoft.Win32;
 using Organ_Pipe_Foot_Model_Generator.Entities;
 using Organ_Pipe_Foot_Model_Generator.Logic;
@@ -13,31 +16,6 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-    }
-
-    private void btnCreateSquare_Click(object sender, RoutedEventArgs e)
-    {
-        string filePath = string.Empty;
-
-        //Create a file to put the square in
-        SaveFileDialog saveFileDialog = new SaveFileDialog
-        {
-            Filter = "DXF files (*.dxf)|*.dxf|All files (*.*)|*.*",
-            Title = "Save a DXF File",
-            FileName = "SquareModel.dxf" // Default file name
-        };
-
-        if ((bool)saveFileDialog.ShowDialog())
-        {
-            filePath = saveFileDialog.FileName; // Return the selected file path
-        }
-
-
-        string txbText = txbLength.Text;
-        int length = int.Parse(txbText);
-
-        var logic = new btnCreateSquareLogic();
-        logic.CreateSquareModel(length, filePath);
     }
 
     #region Prevent input from being non numeric
@@ -73,5 +51,37 @@ public partial class MainWindow : Window
         txbSmallRadius.Text = pipeFootMeasurements.SmallRadius.ToString();
         txbLargeRadius.Text = pipeFootMeasurements.LargeRadius.ToString();
         txbCornerDegrees.Text = pipeFootMeasurements.CornerInDegrees.ToString();
+
+        //Save file for model
+        string filePath = string.Empty;
+
+        //Create a file to put the square in
+        SaveFileDialog saveFileDialog = new SaveFileDialog
+        {
+            Filter = "DXF files (*.dxf)|*.dxf|All files (*.*)|*.*",
+            Title = "Save a DXF File",
+            FileName = "PipeFootModel.dxf" // Default file name
+        };
+
+        if ((bool)saveFileDialog.ShowDialog())
+        {
+            filePath = saveFileDialog.FileName; // Return the selected file path
+        }
+
+        //Add the insert into a document
+        CadDocument doc = new CadDocument();
+
+        //Add lines directly to the document
+        doc.Entities.Add(pipeFootTemplate.Bottomline);
+        doc.Entities.Add(pipeFootTemplate.SmallArc);
+        //doc.Entities.Add(leftLine);
+        //doc.Entities.Add(rightLine);
+
+        // Save the document using DxfWriter
+
+        using (DxfWriter writer = new DxfWriter(filePath, doc, false))
+        {
+            writer.Write();
+        }
     }
 }

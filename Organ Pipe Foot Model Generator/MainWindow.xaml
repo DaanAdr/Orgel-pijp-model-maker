@@ -7,13 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Label x:Name="lblLength" Content="Geef lengte van het vierkant aan in mm:" HorizontalAlignment="Left" Margin="429,26,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbLength" HorizontalAlignment="Left" Margin="655,30,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120">
-            <TextBox.BindingGroup>
-                <BindingGroup/>
-            </TextBox.BindingGroup>
-        </TextBox>
-        <Button x:Name="btnCreateSquare" Content="Creeer model voor vierkant" HorizontalAlignment="Left" Margin="436,57,0,0" VerticalAlignment="Top" Click="btnCreateSquare_Click"/>
         <Label x:Name="lblTopDiameter" Content="Bovendiameter:" HorizontalAlignment="Left" Margin="13,18,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblBottomDiameter" Content="Onderdiameter:" HorizontalAlignment="Left" Margin="13,44,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.504,1.427"/>
         <Label x:Name="lblHeight" Content="Hoogte: " HorizontalAlignment="Left" Margin="13,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.46,-0.923"/>
