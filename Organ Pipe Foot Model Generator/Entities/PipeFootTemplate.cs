@@ -15,7 +15,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         private double XStandoffFromOrigin { get; set; }
         private double YStandoffFromOrigin { get; set; }
         private CSMath.XYZ CenterPointForRadii { get; set; }
-        private readonly double StartAngle = 90;
+        private readonly double StartAngle = 0;
         private double EndAngle { get; set; }
         public PipeFootMeasurements Measurements { get; private set; }
 
@@ -48,35 +48,45 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
                 (Measurements.BottomDiameter - Measurements.TopDiameter) * Measurements.Height / Measurements.BottomDiameter;
 
             double additionalLength = Math.Round(heightTopDiameterToSlantedSidesIntersectionPoint, 1);
-            double xCoordinateForCenterPoint = Bottomline.EndPoint.X + additionalLength;
+            double additionalLengthSquared = additionalLength * additionalLength;
+
+            double shortSide = Measurements.TopDiameter / 2;
+            double shortSideSquared = shortSide * shortSide;
+
+            double additionalSlantLength = Math.Sqrt(additionalLengthSquared + shortSideSquared);
+
+            double xCoordinateForCenterPoint = Bottomline.StartPoint.X - additionalSlantLength;
+
             CenterPointForRadii = new CSMath.XYZ(x: xCoordinateForCenterPoint, y: YStandoffFromOrigin, z: 0);
         }
 
         private void DetermineSmallArc()
         {
-            double radius = 10; // Replace with your desired radius
-            double startAngle = 0; // Start angle in radians
-            double endAngle = Math.PI; // End angle in radians for a semi-circle
-
             SmallArc = new Arc
             {
                 Center = CenterPointForRadii,
                 Radius = Measurements.SmallRadius,
-                StartAngle = 180,
+                StartAngle = StartAngle,
                 EndAngle = EndAngle
             };
         }
 
         private void DetermineEndAngle()
         {
-            double endAngle = StartAngle - Measurements.CornerInDegrees;
+            double endAngle = StartAngle + Measurements.CornerInDegrees;
 
-            if(endAngle < 0)
-            {
-                endAngle += 360;
-            }
+            //if (endAngle < 0)
+            //{
+            //    endAngle += 360;
+            //}
 
             EndAngle = endAngle;
+        }
+
+        //TODO: Remove after testing
+        public Point GetCenterPoint()
+        {
+            return new Point(CenterPointForRadii);
         }
     }
 }

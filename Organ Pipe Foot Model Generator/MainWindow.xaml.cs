@@ -74,7 +74,7 @@ public partial class MainWindow : Window
         //Add lines directly to the document
         doc.Entities.Add(pipeFootTemplate.Bottomline);
         doc.Entities.Add(pipeFootTemplate.SmallArc);
-        //doc.Entities.Add(leftLine);
+        doc.Entities.Add(pipeFootTemplate.GetCenterPoint());
         //doc.Entities.Add(rightLine);
 
         // Save the document using DxfWriter
