@@ -70,7 +70,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             //    endAngle += 360;
             //}
 
-            EndAngle = endAngle;
+            double radians = endAngle * (Math.PI / 180);
+            //EndAngle = endAngle;
+            EndAngle = radians;
         }
 
         //TODO: Remove after testing
