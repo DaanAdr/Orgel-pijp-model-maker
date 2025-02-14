@@ -40,7 +40,7 @@ public partial class MainWindow : Window
         double bottomDiameter = double.Parse(txbBottomDiameter.Text);
         double height = double.Parse(txbHeight.Text);
 
-        InvertedPipeFootTemplate pipeFootTemplate = new InvertedPipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
+        PipeFootTemplate pipeFootTemplate = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
         PipeFootMeasurements pipeFootMeasurements = pipeFootTemplate.Measurements;
 
         //Display calculated measurements
