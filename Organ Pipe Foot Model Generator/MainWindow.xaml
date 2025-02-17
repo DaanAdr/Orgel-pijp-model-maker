@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Organ_Pipe_Foot_Model_Generator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Pipe foot template generator" Height="450" Width="800">
     <Grid>
         <Label x:Name="lblTopDiameter" Content="Bovendiameter:" HorizontalAlignment="Left" Margin="13,18,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblBottomDiameter" Content="Onderdiameter:" HorizontalAlignment="Left" Margin="13,44,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.504,1.427"/>
