@@ -1,0 +1,20 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "**" ]  # Triggers on pushes to any branch
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Execute unit tests
+        run: dotnet test "Organ Pipe Foot Model Generator Tests/Organ Pipe Foot Model Generator Tests.csproj"

@@ -7,15 +7,26 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="btnSaveFile" Content="Sla op" HorizontalAlignment="Left" Margin="30,144,0,0" VerticalAlignment="Top" Click="btnSaveFile_Click" RenderTransformOrigin="0.608,4.127"/>
-        <Label x:Name="lblLength" Content="Geef lengte van het vierkant aan in mm:" HorizontalAlignment="Left" Margin="23,25,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbLength" HorizontalAlignment="Left" Margin="249,29,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120">
-            <TextBox.BindingGroup>
-                <BindingGroup/>
-            </TextBox.BindingGroup>
-        </TextBox>
-        <Button x:Name="btnCreateSquare" Content="Creeer model voor vierkant" HorizontalAlignment="Left" Margin="30,56,0,0" VerticalAlignment="Top" Click="btnCreateSquare_Click"/>
-        <Button x:Name="btnRead" Content="Lees bestand" HorizontalAlignment="Left" Margin="114,144,0,0" VerticalAlignment="Top" Click="btnRead_Click"/>
+        <Label x:Name="lblTopDiameter" Content="Bovendiameter:" HorizontalAlignment="Left" Margin="13,18,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblBottomDiameter" Content="Onderdiameter:" HorizontalAlignment="Left" Margin="13,44,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.504,1.427"/>
+        <Label x:Name="lblHeight" Content="Hoogte: " HorizontalAlignment="Left" Margin="13,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.46,-0.923"/>
+        <TextBox x:Name="txbTopDiameter" HorizontalAlignment="Left" Margin="154,22,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="120" PreviewTextInput="txbTopDiameter_PreviewTextInput"/>
+        <TextBox x:Name="txbBottomDiameter" HorizontalAlignment="Left" Margin="154,48,0,0" TextWrapping="Wrap" Text="150" VerticalAlignment="Top" Width="120" PreviewTextInput="txbBottomDiameter_PreviewTextInput"/>
+        <TextBox x:Name="txbHeight" HorizontalAlignment="Left" Margin="154,74,0,0" TextWrapping="Wrap" Text="200" VerticalAlignment="Top" Width="120" PreviewTextInput="txbHeight_PreviewTextInput"/>
+        <Button x:Name="btnCalculatePipeFootMeasurements" Content="Bereken resterende maten" HorizontalAlignment="Left" Margin="13,109,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.631,2.724" Click="btnCalculatePipeFootMeasurements_Click"/>
+        <Label x:Name="lblLengthSlantedSide" Content="Lengte schuine zijde:" HorizontalAlignment="Left" Margin="13,145,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbLengthSlantedSide" HorizontalAlignment="Left" Margin="154,149,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+        <Label x:Name="lblLengthInnerDiameter" Content="Lengte binnendiameter:" HorizontalAlignment="Left" Margin="13,171,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbLengthInnerDiameter" HorizontalAlignment="Left" Margin="154,175,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="true"/>
+        <Label x:Name="lblLengthOuterDiameter" Content="Lengte buitendiameter:" HorizontalAlignment="Left" Margin="13,197,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbLengthOuterDiameter" HorizontalAlignment="Left" Margin="154,201,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="true"/>
+        <Label x:Name="lblSmallRadius" Content="Kleine radius:" HorizontalAlignment="Left" Margin="13,223,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbSmallRadius" HorizontalAlignment="Left" Margin="154,227,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+        <Label x:Name="lblLargeRadius" Content="Grote radius:" HorizontalAlignment="Left" Margin="13,249,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbLargeRadius" HorizontalAlignment="Left" Margin="154,253,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+        <Label x:Name="lblCornerDegrees" Content="Graden hoek:" HorizontalAlignment="Left" Margin="13,275,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbCornerDegrees" HorizontalAlignment="Left" Margin="154,279,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+        <Button x:Name="btnSaveModel" Content="Model opslaan" HorizontalAlignment="Left" Margin="13,317,0,0" VerticalAlignment="Top" Click="btnSaveModel_Click" IsEnabled="False"/>
 
     </Grid>
 </Window>
