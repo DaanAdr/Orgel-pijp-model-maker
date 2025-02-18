@@ -9,14 +9,12 @@
         Title="Pijp voet model maker" Height="450" Width="800">
     <Grid>
         <TabControl>
+            <TabItem Header="Labiaal voetstukken">
+                <views:ReadFromExcel />
+            </TabItem>
             <TabItem Header="Creeër enkel voetstuk">
                 <views:CreateOne />
             </TabItem>
-            <TabItem Header="TabItem">
-                <views:ReadFromExcel />
-            </TabItem>
         </TabControl>
-
-
     </Grid>
 </Window>

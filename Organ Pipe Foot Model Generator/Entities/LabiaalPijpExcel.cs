@@ -1,5 +1,6 @@
 ﻿using CsvHelper.Configuration.Attributes;
 
+
 namespace Organ_Pipe_Foot_Model_Generator.Entities
 {
     public class LabiaalPijpExcel
