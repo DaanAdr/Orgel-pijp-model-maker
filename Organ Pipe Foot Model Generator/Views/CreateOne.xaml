@@ -13,19 +13,22 @@
         <TextBox x:Name="txbTopDiameter" HorizontalAlignment="Left" Margin="154,22,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="120" PreviewTextInput="txbTopDiameter_PreviewTextInput"/>
         <TextBox x:Name="txbBottomDiameter" HorizontalAlignment="Left" Margin="154,48,0,0" TextWrapping="Wrap" Text="150" VerticalAlignment="Top" Width="120" PreviewTextInput="txbBottomDiameter_PreviewTextInput"/>
         <TextBox x:Name="txbHeight" HorizontalAlignment="Left" Margin="154,74,0,0" TextWrapping="Wrap" Text="200" VerticalAlignment="Top" Width="120" PreviewTextInput="txbHeight_PreviewTextInput"/>
-        <Button x:Name="btnCalculatePipeFootMeasurements" Content="Bereken resterende maten" HorizontalAlignment="Left" Margin="13,109,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.631,2.724" Click="btnCalculatePipeFootMeasurements_Click"/>
-        <Label x:Name="lblLengthSlantedSide" Content="Lengte schuine zijde:" HorizontalAlignment="Left" Margin="13,145,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbLengthSlantedSide" HorizontalAlignment="Left" Margin="154,149,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-        <Label x:Name="lblLengthInnerDiameter" Content="Lengte binnendiameter:" HorizontalAlignment="Left" Margin="13,171,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbLengthInnerDiameter" HorizontalAlignment="Left" Margin="154,175,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="true"/>
-        <Label x:Name="lblLengthOuterDiameter" Content="Lengte buitendiameter:" HorizontalAlignment="Left" Margin="13,197,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbLengthOuterDiameter" HorizontalAlignment="Left" Margin="154,201,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="true"/>
-        <Label x:Name="lblSmallRadius" Content="Kleine radius:" HorizontalAlignment="Left" Margin="13,223,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbSmallRadius" HorizontalAlignment="Left" Margin="154,227,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-        <Label x:Name="lblLargeRadius" Content="Grote radius:" HorizontalAlignment="Left" Margin="13,249,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbLargeRadius" HorizontalAlignment="Left" Margin="154,253,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-        <Label x:Name="lblCornerDegrees" Content="Graden hoek:" HorizontalAlignment="Left" Margin="13,275,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbCornerDegrees" HorizontalAlignment="Left" Margin="154,279,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-        <Button x:Name="btnSaveModel" Content="Model opslaan" HorizontalAlignment="Left" Margin="13,317,0,0" VerticalAlignment="Top" Click="btnSaveModel_Click" IsEnabled="False"/>
+        <Button x:Name="btnCalculatePipeFootMeasurements" Content="Bereken resterende maten" HorizontalAlignment="Left" Margin="13,181,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.631,2.724" Click="btnCalculatePipeFootMeasurements_Click"/>
+        <Label x:Name="lblLengthSlantedSide" Content="Lengte schuine zijde:" HorizontalAlignment="Left" Margin="13,217,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbLengthSlantedSide" HorizontalAlignment="Left" Margin="154,221,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+        <Label x:Name="lblLengthInnerDiameter" Content="Lengte binnendiameter:" HorizontalAlignment="Left" Margin="13,243,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbLengthInnerDiameter" HorizontalAlignment="Left" Margin="154,247,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="true"/>
+        <Label x:Name="lblLengthOuterDiameter" Content="Lengte buitendiameter:" HorizontalAlignment="Left" Margin="13,269,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbLengthOuterDiameter" HorizontalAlignment="Left" Margin="154,273,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="true"/>
+        <Label x:Name="lblSmallRadius" Content="Kleine radius:" HorizontalAlignment="Left" Margin="13,295,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbSmallRadius" HorizontalAlignment="Left" Margin="154,299,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+        <Label x:Name="lblLargeRadius" Content="Grote radius:" HorizontalAlignment="Left" Margin="13,321,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbLargeRadius" HorizontalAlignment="Left" Margin="154,325,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+        <Label x:Name="lblCornerDegrees" Content="Graden hoek:" HorizontalAlignment="Left" Margin="13,347,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbCornerDegrees" HorizontalAlignment="Left" Margin="154,351,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+        <Button x:Name="btnSaveModel" Content="Model opslaan" HorizontalAlignment="Left" Margin="13,389,0,0" VerticalAlignment="Top" Click="btnSaveModel_Click" IsEnabled="False"/>
+        <Label x:Name="lblMetalThickness" Content="Wand dikte:" HorizontalAlignment="Left" Margin="13,97,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="154,101,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="120"/>
+        <CheckBox x:Name="ckbIsOuterDiameter" Content="Boven- en Onderdiameters zijn buitendiameters" HorizontalAlignment="Left" Margin="13,128,0,0" VerticalAlignment="Top" IsChecked="True"/>
     </Grid>
 </UserControl>
