@@ -7,6 +7,7 @@ using CsvHelper;
 using Microsoft.Win32;
 using Organ_Pipe_Foot_Model_Generator.Entities;
 using CsvHelper.Configuration;
+using Organ_Pipe_Foot_Model_Generator.Logic;
 
 namespace Organ_Pipe_Foot_Model_Generator.Views
 {
@@ -30,40 +31,13 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
                 Title = "Selecteer een CSV bestand"
             };
 
-            if (openFileDialog.ShowDialog() == true) filePath = openFileDialog.FileName;
-
-            try
+            if (openFileDialog.ShowDialog() == true)
             {
-                using (var reader = new StreamReader(filePath))
-                using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
-                {
-                    Delimiter = ";", // Set the delimiter to semicolon
-                    //MissingFieldFound = null // Ignore missing fields
-                    TrimOptions = TrimOptions.Trim
-                }))
-                {
-                    // Read the first row and discard it
-                    reader.ReadLine();
+                filePath = openFileDialog.FileName;
 
-                    // Read the headers from the second row
-                    csv.Read();
-                    csv.ReadHeader();
-
-                    // Cast the results of GetRecords to list so a human debugger can see the result properly
-                    List<LabiaalPijpExcel> records = csv.GetRecords<LabiaalPijpExcel>().ToList();
-
-                    var test1 = 1;
-                }
+                // Read CSV file
+                List<LabiaalPijpExcel> records = ReadExcelLogic.ReadLabiaalPijpCSVFile(filePath, ';');
             }
-            catch (CsvHelperException ex)
-            {
-                var test = 3;
-            }
-
-
-
-
-
         }
     }
 }
