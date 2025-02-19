@@ -12,10 +12,10 @@
         public double LargeRadius { get; private set; }
         public double CornerInDegrees { get; private set; }
 
-        public PipeFootMeasurements(double topDiameter, double bottomDiameter, double height)
+        public PipeFootMeasurements(double topDiameter, double bottomDiameter, double height, double metalThickness)
         {
-            TopDiameter = Math.Round(topDiameter, 1);
-            BottomDiameter = Math.Round(bottomDiameter, 1);
+            TopDiameter = Math.Round(topDiameter - (metalThickness * 2), 1);
+            BottomDiameter = Math.Round(bottomDiameter - (metalThickness * 2), 1);
             Height = Math.Round(height, 1);
 
             LengthSlantedSide = CalculateLengthSlantedSide();

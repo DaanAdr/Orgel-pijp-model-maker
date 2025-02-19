@@ -48,10 +48,10 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
             //Measurements
             Assert.Equal(expected: 206.2, actual: measurements.LengthSlantedSide);
             Assert.Equal(expected: 147.7, actual: measurements.LengthInnerDiameter);
-            Assert.Equal(expected: 464.0, actual: measurements.LengthOuterDiameter);
-            Assert.Equal(expected: 96.3, actual: measurements.SmallRadius);
-            Assert.Equal(expected: 302.5, actual: measurements.LargeRadius);
-            Assert.Equal(expected: 87.9, actual: measurements.CornerInDegrees);
+            Assert.Equal(expected: 461.8, actual: measurements.LengthOuterDiameter);
+            Assert.Equal(expected: 97, actual: measurements.SmallRadius);
+            Assert.Equal(expected: 303.2, actual: measurements.LargeRadius);
+            Assert.Equal(expected: 87.2, actual: measurements.CornerInDegrees);
 
             //Model
             //Assert.Equal(new CSMath.XYZ(x: 100, y: 100, z: 0), pipeFootTemplate.Bottomline.StartPoint);
