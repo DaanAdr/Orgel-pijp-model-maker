@@ -16,9 +16,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         private readonly double StartAngleInRadians = 0;
         public PipeFootMeasurements Measurements { get; private set; }
 
-        public PipeFootTemplate(double xStandoffFromOrigin, double yStandoffFromOrigin, double topDiameter, double bottomDiameter, double height)
+        public PipeFootTemplate(double xStandoffFromOrigin, double yStandoffFromOrigin, double topDiameter, double bottomDiameter, double height, double metalThickness = 0)
         {
-            Measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height);
+            Measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
             XStandoffFromOrigin = xStandoffFromOrigin;
             YStandoffFromOrigin = yStandoffFromOrigin;
 

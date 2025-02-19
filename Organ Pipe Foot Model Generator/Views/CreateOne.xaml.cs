@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using ACadSharp;
 using ACadSharp.IO;
@@ -35,16 +36,34 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
         {
             e.Handled = !InputValidation.InputIsNumericOnly(e.Text);
         }
+
+        private void txbMetalThickness_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            e.Handled = !InputValidation.InputIsNumericOnly(e.Text);
+        }
         #endregion
 
 
         private void btnCalculatePipeFootMeasurements_Click(object sender, RoutedEventArgs e)
         {
-            double topDiameter = double.Parse(txbTopDiameter.Text);
-            double bottomDiameter = double.Parse(txbBottomDiameter.Text);
-            double height = double.Parse(txbHeight.Text);
+            double topDiameter = double.Parse(txbTopDiameter.Text, CultureInfo.InvariantCulture);
+            double bottomDiameter = double.Parse(txbBottomDiameter.Text, CultureInfo.InvariantCulture);
+            double height = double.Parse(txbHeight.Text, CultureInfo.InvariantCulture);
+            
+            bool topAndBottomDiameterAreOuterDiameters = (bool)ckbIsOuterDiameter.IsChecked;
 
-            _template = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
+            if(!(bool)ckbIsOuterDiameter.IsChecked)
+            {
+                _template = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
+            }
+            else
+            {
+                double metalThickness = double.Parse(txbMetalThickness.Text, CultureInfo.InvariantCulture);
+
+                // TODO: metalThickness needs to be given a value
+                _template = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height, metalThickness);
+            }
+
             PipeFootMeasurements pipeFootMeasurements = _template.Measurements;
 
             //Display calculated measurements
@@ -90,6 +109,20 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
             using (DxfWriter writer = new DxfWriter(filePath, doc, false))
             {
                 writer.Write();
+            }
+        }
+
+        private void ckbIsOuterDiameter_Click(object sender, RoutedEventArgs e)
+        {
+            bool IsChecked = (bool)ckbIsOuterDiameter.IsChecked;
+
+            if (!IsChecked)
+            {
+                txbMetalThickness.IsEnabled = false;
+            }
+            else
+            {
+                txbMetalThickness.IsEnabled = true;
             }
         }
     }
