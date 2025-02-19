@@ -1,5 +1,4 @@
-﻿using System.Windows.Media.Media3D;
-using ACadSharp.Entities;
+﻿using ACadSharp.Entities;
 
 namespace Organ_Pipe_Foot_Model_Generator.Entities
 {
@@ -93,15 +92,19 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             // Calculate new start point
             double newStartX = centerX + Measurements.SmallRadius * Math.Cos(angleInRadians);
             double newStartY = centerY + Measurements.SmallRadius * Math.Sin(angleInRadians);
+            double newStartXRounded = Math.Round(newStartX, 1);
+            double newStartYRounded = Math.Round(newStartY, 1);
 
             // Calculate endpoint
             double endX = centerX + length * Math.Cos(angleInRadians);
             double endY = centerY + length * Math.Sin(angleInRadians);
+            double endXRounded = Math.Round(endX, 1);
+            double endYRounded = Math.Round(endY, 1);
 
             Slantedline = new Line
             {
-                StartPoint = new CSMath.XYZ(x: newStartX, y: newStartY, z: 0),
-                EndPoint = new CSMath.XYZ(endX, endY, 0)
+                StartPoint = new CSMath.XYZ(x: newStartXRounded, y: newStartYRounded, z: 0),
+                EndPoint = new CSMath.XYZ(endXRounded, endYRounded, 0)
             };
         }
     }

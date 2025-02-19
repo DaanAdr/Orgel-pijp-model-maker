@@ -46,8 +46,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
             Assert.Equal(309.3, pipeFootTemplate.LargeArc.Radius);
 
             // Slanted line
-            Assert.Equal(new CSMath.XYZ(x: 1.8, y: 203, z: 0), pipeFootTemplate.Bottomline.StartPoint);
-            Assert.Equal(new CSMath.XYZ(x: 11.5, y: 409, z: 0), pipeFootTemplate.Bottomline.EndPoint);
+            Assert.Equal(new CSMath.XYZ(x: 1.8, y: 203, z: 0), pipeFootTemplate.Slantedline.StartPoint);
+            Assert.Equal(new CSMath.XYZ(x: 11.5, y: 409, z: 0), pipeFootTemplate.Slantedline.EndPoint);
         }
 
         [Fact]
