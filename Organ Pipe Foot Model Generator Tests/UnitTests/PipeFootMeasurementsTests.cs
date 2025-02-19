@@ -9,8 +9,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
         public void CalculateMeasurements_TopAndBottomDiametersAreInnerDiameters()
         {
             // Arrange
-            double topDiameter = 50;
-            double bottomDiameter = 150;
+            double topDiameter = 150;
+            double bottomDiameter = 50;
             double height = 200;
 
             // Act
@@ -54,8 +54,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
         public void CalculateMeasurements_TopAndBottomDiametersAreOuterDiameters()
         {
             // Arrange
-            double topDiameter = 50;
-            double bottomDiameter = 150;
+            double topDiameter = 150;
+            double bottomDiameter = 50;
             double height = 200;
             double metalThickness = 1.5;
 
