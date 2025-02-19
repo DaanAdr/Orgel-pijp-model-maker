@@ -1,4 +1,5 @@
-﻿using ACadSharp.Entities;
+﻿using System.Windows.Media.Media3D;
+using ACadSharp.Entities;
 
 namespace Organ_Pipe_Foot_Model_Generator.Entities
 {
@@ -46,7 +47,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         private void DetermineCenterPoint()
         {
             // The English word for "straal" is radius. So I don't have to halve the TopDiameter
-            double xCoordinateForCenterPoint = Bottomline.StartPoint.X - Measurements.SmallRadius;
+            double xCoordinateForCenterPoint = Math.Round(Bottomline.StartPoint.X - Measurements.SmallRadius, 1);
 
             CenterPointForRadii = new CSMath.XYZ(x: xCoordinateForCenterPoint, y: YStandoffFromOrigin, z: 0);
         }

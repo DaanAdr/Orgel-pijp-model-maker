@@ -8,17 +8,17 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
         [Fact]
         public void CalculateMeasurements_TopAndBottomDiametersAreInnerDiameters()
         {
-            //Arrange
+            // Arrange
             double topDiameter = 50;
             double bottomDiameter = 150;
             double height = 200;
 
-            //Act
+            // Act
             PipeFootTemplate pipeFootTemplate = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
             PipeFootMeasurements measurements = pipeFootTemplate.Measurements;
 
-            //Assert
-            //Measurements
+            // Assert
+            // Measurements
             Assert.Equal(expected: 206.2, actual: measurements.LengthSlantedSide);
             Assert.Equal(expected: 157.1, actual: measurements.LengthInnerDiameter);
             Assert.Equal(expected: 471.2, actual: measurements.LengthOuterDiameter);
@@ -26,26 +26,32 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
             Assert.Equal(expected: 309.3, actual: measurements.LargeRadius);
             Assert.Equal(expected: 87.3, actual: measurements.CornerInDegrees);
 
-            //Model
+            // Model
             Assert.Equal(new CSMath.XYZ(x: 100, y: 100, z: 0), pipeFootTemplate.Bottomline.StartPoint);
             Assert.Equal(new CSMath.XYZ(x: 306.2, y: 100, z: 0), pipeFootTemplate.Bottomline.EndPoint);
+
+            Assert.Equal(0, pipeFootTemplate.SmallArc.StartAngle);
+            var radians = 87.3 * (Math.PI / 180);
+            Assert.Equal(radians, pipeFootTemplate.SmallArc.EndAngle); //Might be different due to radians
+            Assert.Equal(new CSMath.XYZ(x: -3.1, y: 100, z: 0), pipeFootTemplate.SmallArc.Center);
+            Assert.Equal(103.1, pipeFootTemplate.SmallArc.Radius);
         }
 
         [Fact]
         public void CalculateMeasurements_TopAndBottomDiametersAreOuterDiameters()
         {
-            //Arrange
+            // Arrange
             double topDiameter = 50;
             double bottomDiameter = 150;
             double height = 200;
             double metalThickness = 1.5;
 
-            //Act
+            // Act
             PipeFootTemplate pipeFootTemplate = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height, metalThickness);
             PipeFootMeasurements measurements = pipeFootTemplate.Measurements;
 
-            //Assert
-            //Measurements
+            // Assert
+            // Measurements
             Assert.Equal(expected: 206.2, actual: measurements.LengthSlantedSide);
             Assert.Equal(expected: 147.7, actual: measurements.LengthInnerDiameter);
             Assert.Equal(expected: 461.8, actual: measurements.LengthOuterDiameter);
