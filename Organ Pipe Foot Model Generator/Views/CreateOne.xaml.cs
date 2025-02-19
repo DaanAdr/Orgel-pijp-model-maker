@@ -68,8 +68,8 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
 
             //Display calculated measurements
             txbLengthSlantedSide.Text = pipeFootMeasurements.LengthSlantedSide.ToString();
-            txbLengthInnerDiameter.Text = pipeFootMeasurements.LengthInnerDiameter.ToString();
-            txbLengthOuterDiameter.Text = pipeFootMeasurements.LengthOuterDiameter.ToString();
+            txbLengthInnerDiameter.Text = pipeFootMeasurements.LengthBottomDiameter.ToString();
+            txbLengthOuterDiameter.Text = pipeFootMeasurements.LengthTopDiameter.ToString();
             txbSmallRadius.Text = pipeFootMeasurements.SmallRadius.ToString();
             txbLargeRadius.Text = pipeFootMeasurements.LargeRadius.ToString();
             txbCornerDegrees.Text = pipeFootMeasurements.CornerInDegrees.ToString();

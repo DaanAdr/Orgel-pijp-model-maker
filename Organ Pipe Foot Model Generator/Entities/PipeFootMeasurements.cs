@@ -6,8 +6,8 @@
         public double BottomDiameter { get; }
         public double Height { get; }
         public double LengthSlantedSide { get; private set; }
-        public double LengthInnerDiameter { get; private set; }
-        public double LengthOuterDiameter { get; private set; }
+        public double LengthBottomDiameter { get; private set; }
+        public double LengthTopDiameter { get; private set; }
         public double SmallRadius { get; private set; }
         public double LargeRadius { get; private set; }
         public double CornerInDegrees { get; private set; }
@@ -19,8 +19,8 @@
             Height = Math.Round(height, 1);
 
             LengthSlantedSide = CalculateLengthSlantedSide();
-            LengthInnerDiameter = CalculateLengthInnerDiameter();
-            LengthOuterDiameter = CalculateLengthOuterDiameter();
+            LengthBottomDiameter = CalculateLengthBottomDiameter();
+            LengthTopDiameter = CalculateLengthTopDiameter();
             SmallRadius = CalculateSmallRadius();
             LargeRadius = CalculateLargeRadius();
             CornerInDegrees = CalculateCornerDegrees();
@@ -28,32 +28,34 @@
 
         private double CalculateLengthSlantedSide()
         {
-            double bottomDiameterHalved = BottomDiameter / 2;
             double topDiameterHalved = TopDiameter / 2;
-            double halvedBottomMinusHalvedTop = bottomDiameterHalved - topDiameterHalved;
-            double halvedBottomMinusHalvedTopSquared = halvedBottomMinusHalvedTop * halvedBottomMinusHalvedTop;
+            double bottomDiameterHalved = BottomDiameter / 2;
+
+            double halvedTopMinusHalvedBottom = topDiameterHalved - bottomDiameterHalved;
+            double halvedTopMinusHalvedBottomSquared = halvedTopMinusHalvedBottom * halvedTopMinusHalvedBottom;
+
             double heightSquared = Height * Height;
-            double lengthSlantedSide = Math.Sqrt(halvedBottomMinusHalvedTopSquared + heightSquared);
+            double lengthSlantedSide = Math.Sqrt(halvedTopMinusHalvedBottomSquared + heightSquared);
 
             return Math.Round(lengthSlantedSide, 1); ;
         }
 
-        private double CalculateLengthInnerDiameter()
-        {
-            double topDiameterTimesPi = TopDiameter * Math.PI;
-            return Math.Round(topDiameterTimesPi, 1);
-        }
-
-        private double CalculateLengthOuterDiameter()
+        private double CalculateLengthBottomDiameter()
         {
             double bottomDiameterTimesPi = BottomDiameter * Math.PI;
             return Math.Round(bottomDiameterTimesPi, 1);
         }
 
+        private double CalculateLengthTopDiameter()
+        {
+            double topDiameterTimesPi = TopDiameter * Math.PI;
+            return Math.Round(topDiameterTimesPi, 1);
+        }
+
         private double CalculateSmallRadius()
         {
-            double lengthInnerDiameterTimesLengthSlantedSide = LengthInnerDiameter * LengthSlantedSide;
-            double lengthOuterDiameterMinusLengthInnerDiameter = LengthOuterDiameter - LengthInnerDiameter;
+            double lengthInnerDiameterTimesLengthSlantedSide = LengthBottomDiameter * LengthSlantedSide;
+            double lengthOuterDiameterMinusLengthInnerDiameter = LengthTopDiameter - LengthBottomDiameter;
             double divide = lengthInnerDiameterTimesLengthSlantedSide / lengthOuterDiameterMinusLengthInnerDiameter;
             return Math.Round(divide, 1);
         }
@@ -66,7 +68,7 @@
 
         private double CalculateCornerDegrees()
         {
-            double lengthInnerDiameterDividedBySmallRadius = LengthInnerDiameter / SmallRadius;
+            double lengthInnerDiameterDividedBySmallRadius = LengthBottomDiameter / SmallRadius;
             double sumOutcome = (lengthInnerDiameterDividedBySmallRadius * 180) / Math.PI;
             return Math.Round(sumOutcome, 1);
         }
