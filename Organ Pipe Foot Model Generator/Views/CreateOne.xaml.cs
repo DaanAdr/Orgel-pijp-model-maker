@@ -49,8 +49,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
             double topDiameter = double.Parse(txbTopDiameter.Text, CultureInfo.InvariantCulture);
             double bottomDiameter = double.Parse(txbBottomDiameter.Text, CultureInfo.InvariantCulture);
             double height = double.Parse(txbHeight.Text, CultureInfo.InvariantCulture);
-            double metalThickness = double.Parse(txbMetalThickness.Text, CultureInfo.InvariantCulture);
-
+            
             bool topAndBottomDiameterAreOuterDiameters = (bool)ckbIsOuterDiameter.IsChecked;
 
             if(!(bool)ckbIsOuterDiameter.IsChecked)
@@ -59,6 +58,8 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
             }
             else
             {
+                double metalThickness = double.Parse(txbMetalThickness.Text, CultureInfo.InvariantCulture);
+
                 // TODO: metalThickness needs to be given a value
                 _template = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height, metalThickness);
             }
@@ -108,6 +109,20 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
             using (DxfWriter writer = new DxfWriter(filePath, doc, false))
             {
                 writer.Write();
+            }
+        }
+
+        private void ckbIsOuterDiameter_Click(object sender, RoutedEventArgs e)
+        {
+            bool IsChecked = (bool)ckbIsOuterDiameter.IsChecked;
+
+            if (!IsChecked)
+            {
+                txbMetalThickness.IsEnabled = false;
+            }
+            else
+            {
+                txbMetalThickness.IsEnabled = true;
             }
         }
     }
