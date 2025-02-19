@@ -14,7 +14,7 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
             double height = 200;
 
             //Act
-            InvertedPipeFootTemplate pipeFootTemplate = new InvertedPipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
+            PipeFootTemplate pipeFootTemplate = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
             PipeFootMeasurements measurements = pipeFootTemplate.Measurements;
 
             //Assert
@@ -41,17 +41,17 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
             double metalThickness = 1.5;
 
             //Act
-            InvertedPipeFootTemplate pipeFootTemplate = new InvertedPipeFootTemplate(100, 100, topDiameter, bottomDiameter, height, false, metalThickness);
+            PipeFootTemplate pipeFootTemplate = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height, metalThickness);
             PipeFootMeasurements measurements = pipeFootTemplate.Measurements;
 
             //Assert
             //Measurements
             Assert.Equal(expected: 206.2, actual: measurements.LengthSlantedSide);
-            Assert.Equal(expected: 151.6, actual: measurements.LengthInnerDiameter);
-            Assert.Equal(expected: 466.5, actual: measurements.LengthOuterDiameter);
-            Assert.Equal(expected: 99.3, actual: measurements.SmallRadius);
-            Assert.Equal(expected: 305.5, actual: measurements.LargeRadius);
-            Assert.Equal(expected: 87.5, actual: measurements.CornerInDegrees);
+            Assert.Equal(expected: 147.7, actual: measurements.LengthInnerDiameter);
+            Assert.Equal(expected: 464.0, actual: measurements.LengthOuterDiameter);
+            Assert.Equal(expected: 96.3, actual: measurements.SmallRadius);
+            Assert.Equal(expected: 302.5, actual: measurements.LargeRadius);
+            Assert.Equal(expected: 87.9, actual: measurements.CornerInDegrees);
 
             //Model
             //Assert.Equal(new CSMath.XYZ(x: 100, y: 100, z: 0), pipeFootTemplate.Bottomline.StartPoint);
