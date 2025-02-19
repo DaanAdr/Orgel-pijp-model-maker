@@ -10,8 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\frustum.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ACadSharp" Version="1.0.9" />
     <PackageReference Include="CsvHelper" Version="33.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\frustum.png" />
   </ItemGroup>
 
 </Project>

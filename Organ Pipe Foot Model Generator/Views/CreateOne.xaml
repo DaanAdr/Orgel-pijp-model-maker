@@ -7,14 +7,28 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label x:Name="lblTopDiameter" Content="Bovendiameter:" HorizontalAlignment="Left" Margin="13,18,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblBottomDiameter" Content="Onderdiameter:" HorizontalAlignment="Left" Margin="13,44,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.504,1.427"/>
-        <Label x:Name="lblHeight" Content="Hoogte: " HorizontalAlignment="Left" Margin="13,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.46,-0.923"/>
+        <!--#region User input-->
+        <Label x:Name="lblTopDiameter" Content="Bovendiameter (T):" HorizontalAlignment="Left" Margin="13,18,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txbTopDiameter" HorizontalAlignment="Left" Margin="154,22,0,0" TextWrapping="Wrap" Text="150" VerticalAlignment="Top" Width="120" PreviewTextInput="txbTopDiameter_PreviewTextInput"/>
+
+        <Label x:Name="lblBottomDiameter" Content="Onderdiameter (B):" HorizontalAlignment="Left" Margin="13,44,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.504,1.427"/>
         <TextBox x:Name="txbBottomDiameter" HorizontalAlignment="Left" Margin="154,48,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="120" PreviewTextInput="txbBottomDiameter_PreviewTextInput"/>
+
+        <Label x:Name="lblHeight" Content="Hoogte (H):" HorizontalAlignment="Left" Margin="13,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.46,-0.923"/>
         <TextBox x:Name="txbHeight" HorizontalAlignment="Left" Margin="154,74,0,0" TextWrapping="Wrap" Text="200" VerticalAlignment="Top" Width="120" PreviewTextInput="txbHeight_PreviewTextInput"/>
+
+        <CheckBox x:Name="ckbIsOuterDiameter" Content="Boven- en Onderdiameters zijn buitendiameters" HorizontalAlignment="Left" Margin="13,124,0,0" VerticalAlignment="Top" IsChecked="True" Click="ckbIsOuterDiameter_Click"/>
+
+        <Label x:Name="lblMetalThickness" Content="Wand dikte:" HorizontalAlignment="Left" Margin="13,146,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbMetalThickness" HorizontalAlignment="Left" Margin="154,150,0,0" TextWrapping="Wrap" Text="1.5" VerticalAlignment="Top" Width="120" PreviewTextInput="txbMetalThickness_PreviewTextInput"/>
+
         <Button x:Name="btnCalculatePipeFootMeasurements" Content="Bereken resterende maten" HorizontalAlignment="Left" Margin="6,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.631,2.724" Click="btnCalculatePipeFootMeasurements_Click"/>
-        <Label x:Name="lblLengthSlantedSide" Content="Lengte schuine zijde:" HorizontalAlignment="Left" Margin="10,248,0,0" VerticalAlignment="Top"/>
+        
+        <Image x:Name="imgFrustum" HorizontalAlignment="Left" Height="175" Margin="379,22,0,0" VerticalAlignment="Top" Width="Auto" Source="/Images/frustum.png" />
+        <!--#endregion-->
+        
+        
+        <Label x:Name="lblLengthSlantedSide" Content="Lengte schuine zijde (R):" HorizontalAlignment="Left" Margin="10,248,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txbLengthSlantedSide" HorizontalAlignment="Left" Margin="151,252,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
         <Label x:Name="lblLengthInnerDiameter" Content="Lengte onderdiameter:" HorizontalAlignment="Left" Margin="10,274,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txbLengthInnerDiameter" HorizontalAlignment="Left" Margin="151,278,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="true"/>
@@ -27,8 +41,5 @@
         <Label x:Name="lblCornerDegrees" Content="Graden hoek:" HorizontalAlignment="Left" Margin="10,378,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txbCornerDegrees" HorizontalAlignment="Left" Margin="151,382,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
         <Button x:Name="btnSaveModel" Content="Model opslaan" HorizontalAlignment="Left" Margin="10,420,0,0" VerticalAlignment="Top" Click="btnSaveModel_Click" IsEnabled="False"/>
-        <Label x:Name="lblMetalThickness" Content="Wand dikte:" HorizontalAlignment="Left" Margin="13,146,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbMetalThickness" HorizontalAlignment="Left" Margin="154,150,0,0" TextWrapping="Wrap" Text="1.5" VerticalAlignment="Top" Width="120" PreviewTextInput="txbMetalThickness_PreviewTextInput"/>
-        <CheckBox x:Name="ckbIsOuterDiameter" Content="Boven- en Onderdiameters zijn buitendiameters" HorizontalAlignment="Left" Margin="13,124,0,0" VerticalAlignment="Top" IsChecked="True" Click="ckbIsOuterDiameter_Click"/>
     </Grid>
 </UserControl>
