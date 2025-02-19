@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using ACadSharp;
 using ACadSharp.IO;
@@ -45,11 +46,10 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
 
         private void btnCalculatePipeFootMeasurements_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Adding a decimal point doesn't work
-            double topDiameter = double.Parse(txbTopDiameter.Text);
-            double bottomDiameter = double.Parse(txbBottomDiameter.Text);
-            double height = double.Parse(txbHeight.Text);
-            double metalThickness = double.Parse(txbMetalThickness.Text);
+            double topDiameter = double.Parse(txbTopDiameter.Text, CultureInfo.InvariantCulture);
+            double bottomDiameter = double.Parse(txbBottomDiameter.Text, CultureInfo.InvariantCulture);
+            double height = double.Parse(txbHeight.Text, CultureInfo.InvariantCulture);
+            double metalThickness = double.Parse(txbMetalThickness.Text, CultureInfo.InvariantCulture);
 
             bool topAndBottomDiameterAreOuterDiameters = (bool)ckbIsOuterDiameter.IsChecked;
 
