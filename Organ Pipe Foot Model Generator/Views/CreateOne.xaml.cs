@@ -35,19 +35,34 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
         {
             e.Handled = !InputValidation.InputIsNumericOnly(e.Text);
         }
+
+        private void txbMetalThickness_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            e.Handled = !InputValidation.InputIsNumericOnly(e.Text);
+        }
         #endregion
 
 
         private void btnCalculatePipeFootMeasurements_Click(object sender, RoutedEventArgs e)
         {
+            // TODO: Adding a decimal point doesn't work
             double topDiameter = double.Parse(txbTopDiameter.Text);
             double bottomDiameter = double.Parse(txbBottomDiameter.Text);
             double height = double.Parse(txbHeight.Text);
+            double metalThickness = double.Parse(txbMetalThickness.Text);
 
-            // TODO: Integrate into code
             bool topAndBottomDiameterAreOuterDiameters = (bool)ckbIsOuterDiameter.IsChecked;
 
-            _template = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
+            if(!(bool)ckbIsOuterDiameter.IsChecked)
+            {
+                _template = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
+            }
+            else
+            {
+                // TODO: metalThickness needs to be given a value
+                _template = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height, metalThickness);
+            }
+
             PipeFootMeasurements pipeFootMeasurements = _template.Measurements;
 
             //Display calculated measurements
