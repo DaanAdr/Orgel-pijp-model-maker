@@ -44,6 +44,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
             double bottomDiameter = double.Parse(txbBottomDiameter.Text);
             double height = double.Parse(txbHeight.Text);
 
+            // TODO: Integrate into code
+            bool topAndBottomDiameterAreOuterDiameters = (bool)ckbIsOuterDiameter.IsChecked;
+
             _template = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
             PipeFootMeasurements pipeFootMeasurements = _template.Measurements;
 
