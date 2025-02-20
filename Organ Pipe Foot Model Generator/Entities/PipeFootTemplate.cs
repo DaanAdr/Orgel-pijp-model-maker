@@ -20,6 +20,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 
         public PipeFootTemplate(double xStandoffFromOrigin, double yStandoffFromOrigin, double topDiameter, double bottomDiameter, double height, double metalThickness = 0)
         {
+            // TODO: xStandoffFromOrigin should be used for the center dot instead of the StartPoint for the BottomLine
             Measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
             XStandoffFromOrigin = xStandoffFromOrigin;
             YStandoffFromOrigin = yStandoffFromOrigin;
