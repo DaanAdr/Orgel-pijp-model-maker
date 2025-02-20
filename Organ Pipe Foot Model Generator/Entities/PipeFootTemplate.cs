@@ -11,7 +11,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public Arc LargeArc { get; private set; }
         public Line Slantedline { get; private set; }
         private CSMath.XYZ CenterPointForRadii { get; set; }
-        private readonly double EndAngleInDegrees = 180;
         private double EndAngleInRadians { get; set; }
         private readonly double StartAngleInRadians = 0;
         public PipeFootMeasurements Measurements { get; private set; }
@@ -19,8 +18,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public PipeFootTemplate(double xStandoffFromOrigin, double yStandoffFromOrigin, double topDiameter, double bottomDiameter, double height, double metalThickness = 0)
         {
             Measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
-
-            EndAngleInRadians = EndAngleInDegrees * (Math.PI / 180);
 
             DetermineCenterPoint(xStandoffFromOrigin, yStandoffFromOrigin);
             DetermineBottomline(yStandoffFromOrigin);
