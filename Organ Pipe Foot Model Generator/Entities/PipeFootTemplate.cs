@@ -21,8 +21,8 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             DetermineCenterPoint(xStandoffFromOrigin, yStandoffFromOrigin);
             DetermineBottomline(yStandoffFromOrigin);
             DetermineEndAngle();
-            DetermineSmallArc();
-            DetermineLargeArc();
+            SmallArc = DetermineArc(Measurements.SmallRadius);
+            LargeArc = DetermineArc(Measurements.LargeRadius);
             DetermineSlantedline();
         }
 
@@ -49,23 +49,12 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             EndAngleInRadians = endAngleInRadians;
         }
 
-        private void DetermineSmallArc()
+        private Arc DetermineArc(double radius)
         {
-            SmallArc = new Arc
+            return new Arc
             {
                 Center = CenterPointForRadii,
-                Radius = Measurements.SmallRadius,
-                StartAngle = 0,
-                EndAngle = EndAngleInRadians
-            };
-        }
-
-        private void DetermineLargeArc()
-        {
-            LargeArc = new Arc
-            {
-                Center = CenterPointForRadii,
-                Radius = Measurements.LargeRadius,
+                Radius = radius,
                 StartAngle = 0,
                 EndAngle = EndAngleInRadians
             };
