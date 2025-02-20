@@ -117,7 +117,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 
         public void AddToCadDocument(CadDocument doc)
         {
-            BlockRecord block = new BlockRecord(new Guid().ToString());
+            BlockRecord block = new BlockRecord(Guid.NewGuid().ToString());
             block.Entities.Add(Bottomline);
             block.Entities.Add(SmallArc);
             block.Entities.Add(LargeArc);
