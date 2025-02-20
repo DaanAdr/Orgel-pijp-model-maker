@@ -27,8 +27,10 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 
             EndAngleInRadians = EndAngleInDegrees * (Math.PI / 180);
 
-            DetermineBottomline();
             DetermineCenterPoint();
+
+            DetermineBottomline();
+            
             DetermineEndAngle();
             DetermineSmallArc();
             DetermineLargeArc();
@@ -37,21 +39,19 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 
         private void DetermineBottomline()
         {
-            double totalLineDistance = XStandoffFromOrigin + Measurements.LengthSlantedSide;
+            double xStartPosition = Math.Round(XStandoffFromOrigin + Measurements.SmallRadius, 1);
+            double xEndPosition = xStartPosition + Measurements.LengthSlantedSide;
 
             Bottomline = new Line
             {
-                StartPoint = new CSMath.XYZ(x: XStandoffFromOrigin, y: YStandoffFromOrigin, z: 0),
-                EndPoint = new CSMath.XYZ(totalLineDistance, YStandoffFromOrigin, 0)
+                StartPoint = new CSMath.XYZ(x: xStartPosition, y: YStandoffFromOrigin, z: 0),
+                EndPoint = new CSMath.XYZ(xEndPosition, YStandoffFromOrigin, 0)
             };
         }
 
         private void DetermineCenterPoint()
         {
-            // The English word for "straal" is radius. So I don't have to halve the TopDiameter
-            double xCoordinateForCenterPoint = Math.Round(Bottomline.StartPoint.X - Measurements.SmallRadius, 1);
-
-            CenterPointForRadii = new CSMath.XYZ(x: xCoordinateForCenterPoint, y: YStandoffFromOrigin, z: 0);
+            CenterPointForRadii = new CSMath.XYZ(x: XStandoffFromOrigin, y: YStandoffFromOrigin, z: 0);
         }
 
         private void DetermineEndAngle()
