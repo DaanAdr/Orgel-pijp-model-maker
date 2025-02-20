@@ -107,5 +107,10 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
                 EndPoint = new CSMath.XYZ(endXRounded, endYRounded, 0)
             };
         }
+
+        public double GetFurthestXPosition()
+        {
+            return Bottomline.EndPoint.X;
+        }
     }
 }

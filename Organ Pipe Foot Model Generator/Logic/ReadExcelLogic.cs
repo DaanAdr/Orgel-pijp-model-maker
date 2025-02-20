@@ -17,8 +17,8 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
         {
             List<LabiaalPijpExcel> records = new List<LabiaalPijpExcel>();
 
-            using (var reader = new StreamReader(filePath))
-            using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+            using (StreamReader reader = new StreamReader(filePath))
+            using (CsvReader csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 Delimiter = delimiter.ToString(),
                 TrimOptions = TrimOptions.Trim
