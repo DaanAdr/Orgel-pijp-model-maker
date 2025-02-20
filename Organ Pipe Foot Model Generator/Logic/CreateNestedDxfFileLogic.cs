@@ -12,6 +12,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
             // TODO: Determine Y offset for next octave
 
             // Convert list of excel labiaal pijpen to list of PipeFootTemplate
+            // Octaves might have to be added in reverse order for better identification
             List<LabiaalPijpExcel> rowToNest = octaves["MAJOR"]; // TODO: Remove, this is testing variable
 
             List<PipeFootTemplate> templatesForOctave = ConvertLabiaalPijpExcelToTemplateForOctave(rowToNest);
