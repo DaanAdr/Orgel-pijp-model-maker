@@ -24,22 +24,22 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
         #region Prevent input from being non numeric
         private void txbTopDiameter_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            e.Handled = !InputValidation.InputIsNumericOnly(e.Text);
+            e.Handled = !InputValidationLogic.InputIsNumericOnly(e.Text);
         }
 
         private void txbBottomDiameter_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            e.Handled = !InputValidation.InputIsNumericOnly(e.Text);
+            e.Handled = !InputValidationLogic.InputIsNumericOnly(e.Text);
         }
 
         private void txbHeight_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            e.Handled = !InputValidation.InputIsNumericOnly(e.Text);
+            e.Handled = !InputValidationLogic.InputIsNumericOnly(e.Text);
         }
 
         private void txbMetalThickness_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            e.Handled = !InputValidation.InputIsNumericOnly(e.Text);
+            e.Handled = !InputValidationLogic.InputIsNumericOnly(e.Text);
         }
         #endregion
 

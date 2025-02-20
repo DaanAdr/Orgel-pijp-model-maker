@@ -20,7 +20,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
             InitializeComponent();
         }
 
-        private void btnReadXlsx_Click(object sender, RoutedEventArgs e)
+        private void btnReadCsv_Click(object sender, RoutedEventArgs e)
         {
             string filePath = string.Empty;
 

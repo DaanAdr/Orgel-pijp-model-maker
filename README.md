@@ -1,6 +1,7 @@
 # TODO List
 - Get the horizontal spacing between object correct for nest CAD files.
 - Allow the application to work for pipe corpus.
+- Disallow whitespace in input fields for doubles.
 
 <br>
 

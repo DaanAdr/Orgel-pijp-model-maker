@@ -8,6 +8,12 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
 {
     public static class ReadExcelLogic
     {
+        /// <summary>
+        /// Read a CSV file and map it's values to LabiaalPijpExcel objects
+        /// </summary>
+        /// <param name="filePath">The path the file is located at</param>
+        /// <param name="delimiter">What delimiter character to use for the CSV file</param>
+        /// <returns></returns>
         public static List<LabiaalPijpExcel> ReadLabiaalPijpCSVFile(string filePath, char delimiter)
         {
             List<LabiaalPijpExcel> records = new List<LabiaalPijpExcel>();
