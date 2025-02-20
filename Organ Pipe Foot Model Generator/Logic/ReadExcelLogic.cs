@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CsvHelper.Configuration;
 using CsvHelper;
+using CsvHelper.Configuration;
 using Organ_Pipe_Foot_Model_Generator.Entities;
 
 namespace Organ_Pipe_Foot_Model_Generator.Logic
 {
     public static class ReadExcelLogic
     {
+        /// <summary>
+        /// Read a CSV file and map it's values to LabiaalPijpExcel objects
+        /// </summary>
+        /// <param name="filePath">The path the file is located at</param>
+        /// <param name="delimiter">What delimiter character to use for the CSV file</param>
+        /// <returns></returns>
         public static List<LabiaalPijpExcel> ReadLabiaalPijpCSVFile(string filePath, char delimiter)
         {
             List<LabiaalPijpExcel> records = new List<LabiaalPijpExcel>();
 
-            using (var reader = new StreamReader(filePath))
-            using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+            using (StreamReader reader = new StreamReader(filePath))
+            using (CsvReader csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 Delimiter = delimiter.ToString(),
                 TrimOptions = TrimOptions.Trim
