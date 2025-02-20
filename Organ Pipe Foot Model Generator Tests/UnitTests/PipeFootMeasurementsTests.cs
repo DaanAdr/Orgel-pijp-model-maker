@@ -59,7 +59,7 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
             double metalThickness = 1.5;
 
             // Act
-            PipeFootTemplate pipeFootTemplate = new PipeFootTemplate(-3.1, 100, topDiameter, bottomDiameter, height, metalThickness);
+            PipeFootTemplate pipeFootTemplate = new PipeFootTemplate(3, 100, topDiameter, bottomDiameter, height, metalThickness);
             PipeFootMeasurements measurements = pipeFootTemplate.Measurements;
 
             // Assert
