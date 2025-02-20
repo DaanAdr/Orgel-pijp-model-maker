@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Organ_Pipe_Foot_Model_Generator.Entities;
+﻿using Organ_Pipe_Foot_Model_Generator.Entities;
 
 namespace Organ_Pipe_Foot_Model_Generator.Logic
 {
     public static class CreateNestedDxfFileLogic
     {
-        public static void CreateNestedDxfFile(List<LabiaalPijpExcel> excelPipes)
+        public static List<PipeFootTemplate> CreateNestedDxfFile(List<LabiaalPijpExcel> excelPipes)
         {
             // Group all pipes by octave
+            Dictionary<string, List<LabiaalPijpExcel>> octaves = GroupLabiaalPijpExcelByOctave(excelPipes);
 
-            // Determine Y offset for next octave
+            // TODO: Determine Y offset for next octave
 
             // Convert list of excel labiaal pijpen to list of PipeFootTemplate
+            List<LabiaalPijpExcel> rowToNest = octaves["MAJOR"]; // TODO: Remove, this is testing variable
+
+            List<PipeFootTemplate> templatesForOctave = ConvertLabiaalPijpExcelToTemplateForOctave(rowToNest);
+
+            return templatesForOctave;
         }
 
         private static Dictionary<string, List<LabiaalPijpExcel>> GroupLabiaalPijpExcelByOctave(List<LabiaalPijpExcel> excelPipes)
@@ -34,6 +35,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
                 if (char.IsUpper(excelPipe.Key[0]))
                 {
                     major.Add(excelPipe);
+                    continue;
                 }
 
                 // Check if last char is a number
@@ -57,7 +59,8 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
                             fourth.Add(excelPipe);
                             break;
                     }
-                        
+
+                    continue;
                 }
 
                 // Add remaining to "MINOR"
@@ -78,7 +81,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
             return octaves;
         }
 
-        private List<PipeFootTemplate> ConvertLabiaalPijpExcelToTemplateForOctave(List<LabiaalPijpExcel> excelPipes)
+        private static List<PipeFootTemplate> ConvertLabiaalPijpExcelToTemplateForOctave(List<LabiaalPijpExcel> excelPipes)
         {
             List<PipeFootTemplate> octave = new List<PipeFootTemplate>();
             double previousObjectXPosition = 0;

@@ -1,4 +1,6 @@
-﻿using ACadSharp.Entities;
+﻿using ACadSharp;
+using ACadSharp.Entities;
+using ACadSharp.Tables;
 
 namespace Organ_Pipe_Foot_Model_Generator.Entities
 {
@@ -111,6 +113,19 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public double GetFurthestXPosition()
         {
             return Bottomline.EndPoint.X;
+        }
+
+        public void AddToCadDocument(CadDocument doc)
+        {
+            BlockRecord block = new BlockRecord(new Guid().ToString());
+            block.Entities.Add(Bottomline);
+            block.Entities.Add(SmallArc);
+            block.Entities.Add(LargeArc);
+            block.Entities.Add(Slantedline);
+
+            Insert insert = new Insert(block);
+
+            doc.Entities.Add(insert);
         }
     }
 }
