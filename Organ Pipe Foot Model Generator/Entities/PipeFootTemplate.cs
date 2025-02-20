@@ -12,41 +12,66 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public Line Slantedline { get; private set; }
         public PipeFootMeasurements Measurements { get; private set; }
 
-        public PipeFootTemplate(double xStandoffFromOrigin, double yStandoffFromOrigin, double topDiameter, double bottomDiameter, double height, double metalThickness = 0)
+        /// <summary>
+        /// A representation for a CAD model for a pipe foot
+        /// </summary>
+        /// <param name="xOffsetFromOrigin">How far away from 0 on the X axis the model should be rendered</param>
+        /// <param name="yOffsetFromOrigin">How far away from 0 on the Y axis the model should be rendered</param>
+        /// <param name="topDiameter">The length of the top of the frustum. Labeled T in Images/frustum.png</param>
+        /// <param name="bottomDiameter">The length of the bottom of the frustum. Labeled B in Images/frustum.png</param>
+        /// <param name="height">The height of the frustum. Labeled H in Images/frustum.png</param>
+        /// <param name="metalThickness">How thick the sheet metal for the pipe is, this has to be subtracted (twice) from the top- and bottomdiameter if the measurements are for the outerdiameter of the pipes</param>
+        public PipeFootTemplate(double xOffsetFromOrigin, double yOffsetFromOrigin, double topDiameter, double bottomDiameter, double height, double metalThickness = 0)
         {
             Measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
-            CSMath.XYZ centerpoint = new CSMath.XYZ(x: xStandoffFromOrigin, y: yStandoffFromOrigin, z: 0);
+            CSMath.XYZ centerpoint = new CSMath.XYZ(x: xOffsetFromOrigin, y: yOffsetFromOrigin, z: 0);
             double endAngleInRadians = Measurements.CornerInDegrees * (Math.PI / 180);
 
-            DetermineBottomline(yStandoffFromOrigin, centerpoint.X);
+            DetermineBottomline(yOffsetFromOrigin, centerpoint.X);
             SmallArc = DetermineArc(Measurements.SmallRadius, endAngleInRadians, centerpoint);
             LargeArc = DetermineArc(Measurements.LargeRadius, endAngleInRadians, centerpoint);
             DetermineSlantedline(centerpoint);
         }
 
-        private void DetermineBottomline(double yStandoffFromOrigin, double xPositionForCenterpoint)
+        /// <summary>
+        /// Determine the Start and End coordinates for the bottomline of the CAD model. This line is parallel to the X axis.
+        /// </summary>
+        /// <param name="yOffsetFromOrigin">How far away from 0 on the Y axis the model should be rendered</param>
+        /// <param name="xPositionForCenterpoint">The coordinates on the X axis for the centerpoint</param>
+        private void DetermineBottomline(double yOffsetFromOrigin, double xPositionForCenterpoint)
         {
             double xStartPosition = Math.Round(xPositionForCenterpoint + Measurements.SmallRadius, 1);
             double xEndPosition = xStartPosition + Measurements.LengthSlantedSide;
 
             Bottomline = new Line
             {
-                StartPoint = new CSMath.XYZ(x: xStartPosition, y: yStandoffFromOrigin, z: 0),
-                EndPoint = new CSMath.XYZ(xEndPosition, yStandoffFromOrigin, 0)
+                StartPoint = new CSMath.XYZ(x: xStartPosition, y: yOffsetFromOrigin, z: 0),
+                EndPoint = new CSMath.XYZ(xEndPosition, yOffsetFromOrigin, 0)
             };
         }
 
+        /// <summary>
+        /// Creates and Arc object that can be used in CAD models
+        /// </summary>
+        /// <param name="radius">The radius (straal in Dutch) for the arc</param>
+        /// <param name="endAngleInRadians">The angle (in radians) at which the arc should stop. The arc automatically starts a 0</param>
+        /// <param name="centerpoint">The point around which the arcs are drawn for the CAD model</param>
+        /// <returns></returns>
         private Arc DetermineArc(double radius, double endAngleInRadians, CSMath.XYZ centerpoint)
         {
             return new Arc
             {
                 Center = centerpoint,
                 Radius = radius,
-                StartAngle = 0,
+                StartAngle = 0, // Arcs always start at 0
                 EndAngle = endAngleInRadians
             };
         }
 
+        /// <summary>
+        /// Determine the Start and End coordinates for the slanted line of the CAD model.
+        /// </summary>
+        /// <param name="centerpoint">The point around which the arcs are drawn for the CAD model</param>
         private void DetermineSlantedline(CSMath.XYZ centerpoint)
         {
             double centerX = centerpoint.X;
