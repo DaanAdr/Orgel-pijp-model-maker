@@ -10,25 +10,23 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public Arc SmallArc { get; private set; }
         public Arc LargeArc { get; private set; }
         public Line Slantedline { get; private set; }
-        private CSMath.XYZ CenterPointForRadii { get; set; }
-        private double EndAngleInRadians { get; set; }
         public PipeFootMeasurements Measurements { get; private set; }
 
         public PipeFootTemplate(double xStandoffFromOrigin, double yStandoffFromOrigin, double topDiameter, double bottomDiameter, double height, double metalThickness = 0)
         {
             Measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
+            CSMath.XYZ centerpoint = new CSMath.XYZ(x: xStandoffFromOrigin, y: yStandoffFromOrigin, z: 0);
+            double endAngleInRadians = Measurements.CornerInDegrees * (Math.PI / 180);
 
-            DetermineCenterPoint(xStandoffFromOrigin, yStandoffFromOrigin);
-            DetermineBottomline(yStandoffFromOrigin);
-            DetermineEndAngle();
-            SmallArc = DetermineArc(Measurements.SmallRadius);
-            LargeArc = DetermineArc(Measurements.LargeRadius);
-            DetermineSlantedline();
+            DetermineBottomline(yStandoffFromOrigin, centerpoint.X);
+            SmallArc = DetermineArc(Measurements.SmallRadius, endAngleInRadians, centerpoint);
+            LargeArc = DetermineArc(Measurements.LargeRadius, endAngleInRadians, centerpoint);
+            DetermineSlantedline(centerpoint);
         }
 
-        private void DetermineBottomline(double yStandoffFromOrigin)
+        private void DetermineBottomline(double yStandoffFromOrigin, double xPositionForCenterpoint)
         {
-            double xStartPosition = Math.Round(CenterPointForRadii.X + Measurements.SmallRadius, 1);
+            double xStartPosition = Math.Round(xPositionForCenterpoint + Measurements.SmallRadius, 1);
             double xEndPosition = xStartPosition + Measurements.LengthSlantedSide;
 
             Bottomline = new Line
@@ -38,32 +36,21 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             };
         }
 
-        private void DetermineCenterPoint(double xStandoffFromOrigin, double yStandoffFromOrigin)
-        {
-            CenterPointForRadii = new CSMath.XYZ(x: xStandoffFromOrigin, y: yStandoffFromOrigin, z: 0);
-        }
-
-        private void DetermineEndAngle()
-        {
-            double endAngleInRadians = Measurements.CornerInDegrees * (Math.PI / 180);
-            EndAngleInRadians = endAngleInRadians;
-        }
-
-        private Arc DetermineArc(double radius)
+        private Arc DetermineArc(double radius, double endAngleInRadians, CSMath.XYZ centerpoint)
         {
             return new Arc
             {
-                Center = CenterPointForRadii,
+                Center = centerpoint,
                 Radius = radius,
                 StartAngle = 0,
-                EndAngle = EndAngleInRadians
+                EndAngle = endAngleInRadians
             };
         }
 
-        private void DetermineSlantedline()
+        private void DetermineSlantedline(CSMath.XYZ centerpoint)
         {
-            double centerX = CenterPointForRadii.X;
-            double centerY = CenterPointForRadii.Y;
+            double centerX = centerpoint.X;
+            double centerY = centerpoint.Y;
             double angleInDegrees = Measurements.CornerInDegrees;
             double length = Measurements.LargeRadius;
 
