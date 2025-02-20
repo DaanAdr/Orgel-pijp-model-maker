@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
-using Organ_Pipe_Foot_Model_Generator.Entities;
+﻿using Organ_Pipe_Foot_Model_Generator.Entities;
 
 namespace Organ_Pipe_Foot_Model_Generator.Logic
 {
     public static class CreateNestedDxfFileLogic
     {
-        public static List<PipeFootTemplate> CreateNestedDxfFile(List<LabiaalPijpExcel> excelPipes)
+        public static List<PipeFootTemplate> CreateNestedDxfFile(
+            List<LabiaalPijpExcel> excelPipes, 
+            double horizontalObjectSeperationDistance,
+            double verticalObjectSeperationDistance
+        )
         {
             // Group all pipes by octave
             Dictionary<string, List<LabiaalPijpExcel>> octaves = GroupLabiaalPijpExcelByOctave(excelPipes);
@@ -13,7 +16,11 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
             // Convert list of excel labiaal pijpen to list of PipeFootTemplate
             // TODO: Octaves might have to be added in reverse order for better identification
 
-            List<PipeFootTemplate> templatesForOctave = ConvertLabiaalPijpExcelToTemplateForAllOctaves(octaves);
+            List<PipeFootTemplate> templatesForOctave = ConvertLabiaalPijpExcelToTemplateForAllOctaves(
+                octaves, 
+                horizontalObjectSeperationDistance, 
+                verticalObjectSeperationDistance
+            );
 
             return templatesForOctave;
         }
@@ -80,11 +87,14 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
             return octaves;
         }
 
-        private static List<PipeFootTemplate> ConvertLabiaalPijpExcelToTemplateForAllOctaves(Dictionary<string, List<LabiaalPijpExcel>> octaves)
+        private static List<PipeFootTemplate> ConvertLabiaalPijpExcelToTemplateForAllOctaves(
+            Dictionary<string, List<LabiaalPijpExcel>> octaves, 
+            double horizontalObjectSeperationDistance,
+            double verticalObjectSeperationDistance
+        )
         {
             List<PipeFootTemplate> templates = new List<PipeFootTemplate>();
             double previousObjectYPosition = 0;
-            double objectSeperationDistance = 100;
 
             // Loop through all octaves
             foreach (KeyValuePair<string, List<LabiaalPijpExcel>> octave in octaves)
@@ -95,9 +105,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
                 if (excelPipesInOctave.Count <= 0) continue;
 
                 // Determine Y offset for next octave
-                double yStandoffFromOrigin = previousObjectYPosition + objectSeperationDistance;
+                double yStandoffFromOrigin = previousObjectYPosition + verticalObjectSeperationDistance;
 
-                List<PipeFootTemplate> templatesForOctave = ConvertLabiaalPijpExcelToTemplateForOctave(excelPipesInOctave, yStandoffFromOrigin);
+                List<PipeFootTemplate> templatesForOctave = ConvertLabiaalPijpExcelToTemplateForOctave(excelPipesInOctave, yStandoffFromOrigin, horizontalObjectSeperationDistance);
                 templates.AddRange(templatesForOctave);
 
                 // Update previousObjectYPosition
@@ -107,17 +117,20 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
             return templates;
         }
 
-        private static List<PipeFootTemplate> ConvertLabiaalPijpExcelToTemplateForOctave(List<LabiaalPijpExcel> excelPipes, double yStandoffFromOrigin)
+        private static List<PipeFootTemplate> ConvertLabiaalPijpExcelToTemplateForOctave(
+            List<LabiaalPijpExcel> excelPipes, 
+            double yStandoffFromOrigin,
+            double horizontalObjectSeperationDistance
+        )
         {
             List<PipeFootTemplate> octave = new List<PipeFootTemplate>();
             double previousObjectXPosition = 0;
-            double objectSeperationDistance = 100;
 
             // Loop through all records
             foreach(LabiaalPijpExcel excelPipe in excelPipes)
             {
                 // Determine X offset for next pipe
-                double xStandoffFromOrigin = previousObjectXPosition + objectSeperationDistance;
+                double xStandoffFromOrigin = previousObjectXPosition + horizontalObjectSeperationDistance;
 
                 PipeFootTemplate template = ConvertLabiaalPijpExcelToTemplate(excelPipe, xStandoffFromOrigin, yStandoffFromOrigin);
                 octave.Add(template);

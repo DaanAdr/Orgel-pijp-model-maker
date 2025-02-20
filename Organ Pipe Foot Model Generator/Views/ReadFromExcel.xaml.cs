@@ -44,9 +44,11 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             string filePath = string.Empty;
+            double horizontalSeperatorDistance = Math.Round(double.Parse(txbSeperatorXAxis.Text), 1);
+            double verticalSeperatorDistance = Math.Round(double.Parse(txbSeperatorYAxis.Text), 1);
 
             // Create models for CAD file
-            List<PipeFootTemplate> cadModels = CreateNestedDxfFileLogic.CreateNestedDxfFile(_pipesInExcel);
+            List<PipeFootTemplate> cadModels = CreateNestedDxfFileLogic.CreateNestedDxfFile(_pipesInExcel, horizontalSeperatorDistance, verticalSeperatorDistance);
 
             //Create a file to put the square in
             SaveFileDialog saveFileDialog = new SaveFileDialog
