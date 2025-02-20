@@ -10,8 +10,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public Arc SmallArc { get; private set; }
         public Arc LargeArc { get; private set; }
         public Line Slantedline { get; private set; }
-        private double XStandoffFromOrigin { get; set; }
-        private double YStandoffFromOrigin { get; set; }
         private CSMath.XYZ CenterPointForRadii { get; set; }
         private readonly double EndAngleInDegrees = 180;
         private double EndAngleInRadians { get; set; }
@@ -20,38 +18,33 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 
         public PipeFootTemplate(double xStandoffFromOrigin, double yStandoffFromOrigin, double topDiameter, double bottomDiameter, double height, double metalThickness = 0)
         {
-            // TODO: xStandoffFromOrigin should be used for the center dot instead of the StartPoint for the BottomLine
             Measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
-            XStandoffFromOrigin = xStandoffFromOrigin;
-            YStandoffFromOrigin = yStandoffFromOrigin;
 
             EndAngleInRadians = EndAngleInDegrees * (Math.PI / 180);
 
-            DetermineCenterPoint();
-
-            DetermineBottomline();
-            
+            DetermineCenterPoint(xStandoffFromOrigin, yStandoffFromOrigin);
+            DetermineBottomline(yStandoffFromOrigin);
             DetermineEndAngle();
             DetermineSmallArc();
             DetermineLargeArc();
             DetermineSlantedline();
         }
 
-        private void DetermineBottomline()
+        private void DetermineBottomline(double yStandoffFromOrigin)
         {
-            double xStartPosition = Math.Round(XStandoffFromOrigin + Measurements.SmallRadius, 1);
+            double xStartPosition = Math.Round(CenterPointForRadii.X + Measurements.SmallRadius, 1);
             double xEndPosition = xStartPosition + Measurements.LengthSlantedSide;
 
             Bottomline = new Line
             {
-                StartPoint = new CSMath.XYZ(x: xStartPosition, y: YStandoffFromOrigin, z: 0),
-                EndPoint = new CSMath.XYZ(xEndPosition, YStandoffFromOrigin, 0)
+                StartPoint = new CSMath.XYZ(x: xStartPosition, y: yStandoffFromOrigin, z: 0),
+                EndPoint = new CSMath.XYZ(xEndPosition, yStandoffFromOrigin, 0)
             };
         }
 
-        private void DetermineCenterPoint()
+        private void DetermineCenterPoint(double xStandoffFromOrigin, double yStandoffFromOrigin)
         {
-            CenterPointForRadii = new CSMath.XYZ(x: XStandoffFromOrigin, y: YStandoffFromOrigin, z: 0);
+            CenterPointForRadii = new CSMath.XYZ(x: xStandoffFromOrigin, y: yStandoffFromOrigin, z: 0);
         }
 
         private void DetermineEndAngle()
