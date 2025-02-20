@@ -1,15 +1,10 @@
-﻿using System.Globalization;
-using System.IO;
-using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using CsvHelper;
+using ACadSharp;
+using ACadSharp.IO;
 using Microsoft.Win32;
 using Organ_Pipe_Foot_Model_Generator.Entities;
-using CsvHelper.Configuration;
 using Organ_Pipe_Foot_Model_Generator.Logic;
-using ACadSharp.IO;
-using ACadSharp;
 
 namespace Organ_Pipe_Foot_Model_Generator.Views
 {
@@ -18,7 +13,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
     /// </summary>
     public partial class ReadFromExcel : UserControl
     {
-        List<PipeFootTemplate> _pipeFootTemplates;
+        List<LabiaalPijpExcel> _pipesInExcel;
 
         public ReadFromExcel()
         {
@@ -40,10 +35,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
                 filePath = openFileDialog.FileName;
 
                 // Read CSV file
-                List<LabiaalPijpExcel> records = ReadExcelLogic.ReadLabiaalPijpCSVFile(filePath, ';');
-
-                // Convert to CAD objects
-                _pipeFootTemplates = CreateNestedDxfFileLogic.CreateNestedDxfFile(records);
+                _pipesInExcel = ReadExcelLogic.ReadLabiaalPijpCSVFile(filePath, ';');
 
                 btnSave.IsEnabled = true;
             }
@@ -51,8 +43,10 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            //Save file for model
             string filePath = string.Empty;
+
+            // Create models for CAD file
+            List<PipeFootTemplate> cadModels = CreateNestedDxfFileLogic.CreateNestedDxfFile(_pipesInExcel);
 
             //Create a file to put the square in
             SaveFileDialog saveFileDialog = new SaveFileDialog
@@ -70,14 +64,13 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
             //Add the insert into a document
             CadDocument doc = new CadDocument();
 
-            // Loop through all templates and add them to the CadDocument
-            foreach(PipeFootTemplate template in _pipeFootTemplates)
+            // Loop through all CADModels and add them to the CadDocument
+            foreach(PipeFootTemplate cadModel in cadModels)
             {
-                template.AddToCadDocument(doc);
+                cadModel.AddToCadDocument(doc);
             }
 
             // Save the document using DxfWriter
-
             using (DxfWriter writer = new DxfWriter(filePath, doc, false))
             {
                 writer.Write();
