@@ -29,8 +29,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 
             DetermineBottomline(yOffsetFromOrigin, xOffsetFromOrigin);
 
-            CSMath.XYZ centerpoint = new CSMath.XYZ(x: Bottomline.StartPoint.X - Measurements.SmallRadius, y: yOffsetFromOrigin, z: 0);
-
+            CSMath.XYZ centerpoint = new CSMath.XYZ(x: Math.Round(Bottomline.StartPoint.X - Measurements.SmallRadius, 1), y: yOffsetFromOrigin, z: 0);
 
             SmallArc = DetermineArc(Measurements.SmallRadius, endAngleInRadians, centerpoint);
             LargeArc = DetermineArc(Measurements.LargeRadius, endAngleInRadians, centerpoint);
