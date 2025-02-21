@@ -24,10 +24,14 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public PipeFootTemplate(double xOffsetFromOrigin, double yOffsetFromOrigin, double topDiameter, double bottomDiameter, double height, double metalThickness = 0)
         {
             Measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
-            CSMath.XYZ centerpoint = new CSMath.XYZ(x: xOffsetFromOrigin, y: yOffsetFromOrigin, z: 0);
+            
             double endAngleInRadians = Measurements.CornerInDegrees * (Math.PI / 180);
 
-            DetermineBottomline(yOffsetFromOrigin, centerpoint.X);
+            DetermineBottomline(yOffsetFromOrigin, xOffsetFromOrigin);
+
+            CSMath.XYZ centerpoint = new CSMath.XYZ(x: Bottomline.StartPoint.X - Measurements.SmallRadius, y: yOffsetFromOrigin, z: 0);
+
+
             SmallArc = DetermineArc(Measurements.SmallRadius, endAngleInRadians, centerpoint);
             LargeArc = DetermineArc(Measurements.LargeRadius, endAngleInRadians, centerpoint);
             DetermineSlantedline(centerpoint);
@@ -38,9 +42,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         /// </summary>
         /// <param name="yOffsetFromOrigin">How far away from 0 on the Y axis the model should be rendered</param>
         /// <param name="xPositionForCenterpoint">The coordinates on the X axis for the centerpoint</param>
-        private void DetermineBottomline(double yOffsetFromOrigin, double xPositionForCenterpoint)
+        private void DetermineBottomline(double yOffsetFromOrigin, double xOffsetFromOrigin)
         {
-            double xStartPosition = Math.Round(xPositionForCenterpoint + Measurements.SmallRadius, 1);
+            double xStartPosition = xOffsetFromOrigin;
             double xEndPosition = xStartPosition + Measurements.LengthSlantedSide;
 
             Bottomline = new Line

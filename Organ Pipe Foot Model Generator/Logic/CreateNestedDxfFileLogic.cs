@@ -4,6 +4,8 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
 {
     public static class CreateNestedDxfFileLogic
     {
+        private static int _additionalhorizontalSpacer;
+
         /// <summary>
         /// Convert a list of LabiaalPijpExcel objects into a list of PipeFootTemplate objects, that can be used to populate a CAD file
         /// </summary>
@@ -17,6 +19,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
             double verticalObjectSeperationDistance
         )
         {
+            //Set horizontal seperation distance
+            _additionalhorizontalSpacer = excelPipes.Count();
+
             // Group all pipes by octave
             Dictionary<string, List<LabiaalPijpExcel>> octaves = GroupLabiaalPijpExcelByOctave(excelPipes);
 
@@ -155,13 +160,15 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
             foreach(LabiaalPijpExcel excelPipe in excelPipes)
             {
                 // Determine X offset for next pipe
-                double xStandoffFromOrigin = previousObjectXPosition + horizontalObjectSeperationDistance;
+                double xStandoffFromOrigin = previousObjectXPosition + horizontalObjectSeperationDistance + _additionalhorizontalSpacer;
 
                 PipeFootTemplate template = ConvertLabiaalPijpExcelToTemplate(excelPipe, xStandoffFromOrigin, yOffsetFromOrigin);
                 octave.Add(template);
 
                 // Set x-position for last object 
                 previousObjectXPosition = template.GetFurthestXPosition();
+
+                _additionalhorizontalSpacer -= 1;
             }
 
             return octave;
