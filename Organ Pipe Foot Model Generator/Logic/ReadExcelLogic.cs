@@ -34,7 +34,13 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
 
                 // Map remaining rows to LabiaalPijpExcel entity
                 // Cast the results of GetRecords to list so a human debugger can see the result properly
-                records = csv.GetRecords<LabiaalPijpExcel>().ToList();
+                records = csv.GetRecords<LabiaalPijpExcel>()
+                    .Where(record => !string.IsNullOrWhiteSpace(record.Key) ||
+                                  !double.IsNaN(record.Height) ||
+                                  !double.IsNaN(record.TopDiameter) ||
+                                  !double.IsNaN(record.MetalThickness) ||
+                                  !double.IsNaN(record.PlateWidthFoot))
+                    .ToList();
             }
 
             return records;

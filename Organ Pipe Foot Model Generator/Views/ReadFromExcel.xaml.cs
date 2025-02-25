@@ -14,6 +14,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
     public partial class ReadFromExcel : UserControl
     {
         List<LabiaalPijpExcel> _pipesInExcel;
+        string _fileName;
 
         public ReadFromExcel()
         {
@@ -33,6 +34,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
             if (openFileDialog.ShowDialog() == true)
             {
                 filePath = openFileDialog.FileName;
+                _fileName = System.IO.Path.GetFileNameWithoutExtension(filePath);
 
                 // Read CSV file
                 _pipesInExcel = ReadExcelLogic.ReadLabiaalPijpCSVFile(filePath, ';');
@@ -55,7 +57,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
             {
                 Filter = "DXF files (*.dxf)|*.dxf|All files (*.*)|*.*",
                 Title = "Save a DXF File",
-                FileName = "Nested Pijp voet modellen.dxf" // Default file name
+                FileName = $"{_fileName}.dxf" // Default file name
             };
 
             if ((bool)saveFileDialog.ShowDialog())
