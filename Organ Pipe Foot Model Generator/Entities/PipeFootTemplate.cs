@@ -11,6 +11,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public Arc LargeArc { get; private set; }
         public Line Slantedline { get; private set; }
         public PipeFootMeasurements Measurements { get; private set; }
+        private MText Key { get; set; }
+
+        private Point CutoutHelper { get; set; }
 
         /// <summary>
         /// A representation for a CAD model for a pipe foot
@@ -21,7 +24,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         /// <param name="bottomDiameter">The length of the bottom of the frustum. Labeled B in Images/frustum.png</param>
         /// <param name="height">The height of the frustum. Labeled H in Images/frustum.png</param>
         /// <param name="metalThickness">How thick the sheet metal for the pipe is, this has to be subtracted (twice) from the top- and bottomdiameter if the measurements are for the outerdiameter of the pipes</param>
-        public PipeFootTemplate(double xOffsetFromOrigin, double yOffsetFromOrigin, double topDiameter, double bottomDiameter, double height, double metalThickness = 0)
+        public PipeFootTemplate(double xOffsetFromOrigin, double yOffsetFromOrigin, double topDiameter, double bottomDiameter, double height, double metalThickness = 0, string key = "")
         {
             Measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
             
@@ -34,6 +37,12 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             SmallArc = DetermineArc(Measurements.SmallRadius, endAngleInRadians, centerpoint);
             LargeArc = DetermineArc(Measurements.LargeRadius, endAngleInRadians, centerpoint);
             DetermineSlantedline(centerpoint);
+
+            // Check if key should be added to the model
+            if (!string.IsNullOrWhiteSpace(key))
+            {
+                DrawKey(key);
+            }
         }
 
         /// <summary>
@@ -104,6 +113,37 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             };
         }
 
+        private void DrawKey(string key)
+        {
+            double xPosition = Bottomline.EndPoint.X;
+            double lowestYPosition = Bottomline.EndPoint.Y;
+            double totalHeight = Measurements.LengthTopDiameter;
+            double letterHeight;
+            double letterY = lowestYPosition + 1;
+
+            // Lock letter height to 1 cm if the total height 
+            if(totalHeight >= 17)
+            {
+                letterHeight = 15;
+            }
+            else
+            {
+                letterHeight = totalHeight - 2;
+            }
+
+            // Estimate text width (average width per character can vary)
+            double averageCharacterWidth = letterHeight * 0.25; // Adjust this factor as needed
+            double estimatedWidth = averageCharacterWidth * key.Length;
+            double letterX = Math.Round(xPosition - (estimatedWidth + 1), 1);
+
+            Key = new MText
+            {
+                Height = letterHeight,
+                Value = key,
+                InsertPoint = new CSMath.XYZ(letterX, letterY, 0)
+            };
+        }
+
         public double GetFurthestXPosition()
         {
             return Bottomline.EndPoint.X;
@@ -116,6 +156,12 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             block.Entities.Add(SmallArc);
             block.Entities.Add(LargeArc);
             block.Entities.Add(Slantedline);
+
+            // Check if the key need to be added
+            if(Key !=  null)
+            {
+                block.Entities.Add(Key);
+            }
 
             Insert insert = new Insert(block);
 

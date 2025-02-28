@@ -191,7 +191,8 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
                 excelPipe.TopDiameter, 
                 bottomDiameter, 
                 excelPipe.Height, 
-                excelPipe.MetalThickness
+                excelPipe.MetalThickness,
+                excelPipe.Key
             );
 
             return template;
