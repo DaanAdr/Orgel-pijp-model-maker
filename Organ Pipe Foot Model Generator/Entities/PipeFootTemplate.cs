@@ -203,25 +203,38 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             double lowerEndX = endXRounded + perpDirX * offsetDistance;
             double lowerEndY = endYRounded + perpDirY * offsetDistance;
 
+            // Calculate the start point for UpperLabiaalLine by moving back 1.5 mm along the direction of HelperLine
+            double upperStartX = lowerEndX - (1.5 * unitDirX);
+            double upperStartY = lowerEndY - (1.5 * unitDirY);
+
+            // Create the UpperLabiaalLine
             UpperLabiaalLine = new Line
             {
-                //StartPoint = new CSMath.XYZ(x: Math.Round(lowerStartX, 1), y: Math.Round(lowerStartY, 1), z: 0),
-                StartPoint = new CSMath.XYZ(x: Math.Round(lowerEndX - 3, 1), y: Math.Round(lowerEndY - 3, 1), z: 0),
+                StartPoint = new CSMath.XYZ(x: Math.Round(upperStartX, 1), y: Math.Round(upperStartY, 1), z: 0),
                 EndPoint = new CSMath.XYZ(x: Math.Round(lowerEndX, 1), y: Math.Round(lowerEndY, 1), z: 0) // New endpoint parallel to HelperLine
             };
 
-            // Calculate the new start and end points for LowerLabiaalLine
-            double upperStartX = newStartXRounded - perpDirX * offsetDistance;
-            double uppererStartY = newStartYRounded - perpDirY * offsetDistance;
-            double upperEndX = endXRounded - perpDirX * offsetDistance;
-            double upperEndY = endYRounded - perpDirY * offsetDistance;
+            //UpperLabiaalLine = new Line
+            //{
+            //    //StartPoint = new CSMath.XYZ(x: Math.Round(lowerStartX, 1), y: Math.Round(lowerStartY, 1), z: 0),
+            //    // TODO: Little cheat of minus 3 doesn't work for other pipes
+            //    StartPoint = new CSMath.XYZ(x: Math.Round(lowerEndX - 3, 1), y: Math.Round(lowerEndY - 3, 1), z: 0),
+            //    EndPoint = new CSMath.XYZ(x: Math.Round(lowerEndX, 1), y: Math.Round(lowerEndY, 1), z: 0) // New endpoint parallel to HelperLine
+            //};
 
-            LowerLabiaalLine = new Line
-            {
-                //StartPoint = new CSMath.XYZ(x: Math.Round(lowerStartX, 1), y: Math.Round(lowerStartY, 1), z: 0),
-                StartPoint = new CSMath.XYZ(x: Math.Round(upperEndX - 3, 1), y: Math.Round(upperEndY - 3, 1), z: 0),
-                EndPoint = new CSMath.XYZ(x: Math.Round(upperEndX, 1), y: Math.Round(upperEndY, 1), z: 0) // New endpoint parallel to HelperLine
-            };
+            //// Calculate the new start and end points for LowerLabiaalLine
+            //double upperStartX = newStartXRounded - perpDirX * offsetDistance;
+            //double uppererStartY = newStartYRounded - perpDirY * offsetDistance;
+            //double upperEndX = endXRounded - perpDirX * offsetDistance;
+            //double upperEndY = endYRounded - perpDirY * offsetDistance;
+
+            //LowerLabiaalLine = new Line
+            //{
+            //    //StartPoint = new CSMath.XYZ(x: Math.Round(lowerStartX, 1), y: Math.Round(lowerStartY, 1), z: 0),
+            //    // TODO: Little cheat of minus 3 doesn't work for other pipes
+            //    StartPoint = new CSMath.XYZ(x: Math.Round(upperEndX - 3, 1), y: Math.Round(upperEndY - 3, 1), z: 0),
+            //    EndPoint = new CSMath.XYZ(x: Math.Round(upperEndX, 1), y: Math.Round(upperEndY, 1), z: 0) // New endpoint parallel to HelperLine
+            //};
         }
 
         public double GetFurthestXPosition()
@@ -245,7 +258,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 
             // TODO: Remove?
             block.Entities.Add(HelperLine);
-            block.Entities.Add(LowerLabiaalLine);
+            //block.Entities.Add(LowerLabiaalLine);
             block.Entities.Add(UpperLabiaalLine);
 
             Insert insert = new Insert(block);
