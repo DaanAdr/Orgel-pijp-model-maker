@@ -15,7 +15,8 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 
         // TODO: Remove helper property?
         private Line HelperLine { get; set; }
-        private Line LabiaalLine { get; set; }
+        private Line LowerLabiaalLine { get; set; }
+        private Line UpperLabiaalLine { get; set; }
 
         /// <summary>
         /// A representation for a CAD model for a pipe foot
@@ -178,22 +179,33 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
                 EndPoint = new CSMath.XYZ(endXRounded, endYRounded, 0)  // Indicated the middle of the LargeArc
             };
 
-            // Calculate the angle increment for 2 cm along the arc
-            double arcLength = 20.0;
-            double radius = Measurements.LargeRadius; // Assuming this is the radius of the arc
-            double angleIncrement = arcLength / radius; // Angle in radians
+            // LowerLabialLine
+            // Calculate the direction vector of HelperLine
+            double dirX = endXRounded - newStartXRounded;
+            double dirY = endYRounded - newStartYRounded;
 
-            // Calculate the new endpoint for the line 2 cm down along the arc
-            double newEndAngle = angleInRadians - angleIncrement; // Move down the arc
-            double newEndX = centerX + length * Math.Cos(newEndAngle);
-            double newEndY = centerY + length * Math.Sin(newEndAngle);
-            double newEndXRounded = Math.Round(newEndX, 1);
-            double newEndYRounded = Math.Round(newEndY, 1);
+            // Normalize the direction vector
+            double lengthDir = Math.Sqrt(dirX * dirX + dirY * dirY);
+            double unitDirX = dirX / lengthDir;
+            double unitDirY = dirY / lengthDir;
 
-            LabiaalLine = new Line
+            // Calculate the perpendicular direction vector (rotate by 90 degrees)
+            double perpDirX = -unitDirY; // Rotate counter-clockwise
+            double perpDirY = unitDirX;
+
+            // Offset distance (2 cm)
+            double offsetDistance = 2.0; // in cm
+
+            // Calculate the new start and end points for LowerLabiaalLine
+            double lowerStartX = newStartXRounded + perpDirX * offsetDistance;
+            double lowerStartY = newStartYRounded + perpDirY * offsetDistance;
+            double lowerEndX = endXRounded + perpDirX * offsetDistance;
+            double lowerEndY = endYRounded + perpDirY * offsetDistance;
+
+            LowerLabiaalLine = new Line
             {
-                StartPoint = new CSMath.XYZ(x: newStartXRounded, y: newStartYRounded, z: 0),
-                EndPoint = new CSMath.XYZ(newEndXRounded, newEndYRounded, 0) // New endpoint 2 cm down the arc
+                StartPoint = new CSMath.XYZ(x: Math.Round(lowerStartX, 1), y: Math.Round(lowerStartY, 1), z: 0),
+                EndPoint = new CSMath.XYZ(x: Math.Round(lowerEndX, 1), y: Math.Round(lowerEndY, 1), z: 0) // New endpoint parallel to HelperLine
             };
         }
 
@@ -218,7 +230,8 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 
             // TODO: Remove?
             block.Entities.Add(HelperLine);
-            block.Entities.Add(LabiaalLine);
+            block.Entities.Add(LowerLabiaalLine);
+            //block.Entities.Add(UpperLabiaalLine);
 
             Insert insert = new Insert(block);
 
