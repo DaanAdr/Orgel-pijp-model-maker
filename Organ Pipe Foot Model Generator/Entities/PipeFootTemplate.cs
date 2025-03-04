@@ -13,7 +13,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public PipeFootMeasurements Measurements { get; private set; }
         private MText Key { get; set; }
 
-        private Point CutoutHelper { get; set; }
+        // TODO: Remove helper property?
+        private Line HelperLine { get; set; }
+        private Line LabiaalLine { get; set; }
 
         /// <summary>
         /// A representation for a CAD model for a pipe foot
@@ -43,6 +45,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             {
                 DrawKey(key);
             }
+
+            // TODO: Remove call to helper method?
+            DrawHelperLine(centerpoint);
         }
 
         /// <summary>
@@ -144,6 +149,54 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             };
         }
 
+        // TODO: Remove helper method?
+        private void DrawHelperLine(CSMath.XYZ centerpoint)
+        {
+            double centerX = centerpoint.X;
+            double centerY = centerpoint.Y;
+            double angleInDegrees = Measurements.CornerInDegrees / 2;
+            double length = Measurements.LargeRadius;
+
+            // Convert angle to radians
+            double angleInRadians = angleInDegrees * (Math.PI / 180);
+
+            // Calculate new start point
+            double newStartX = centerX + Measurements.SmallRadius * Math.Cos(angleInRadians);
+            double newStartY = centerY + Measurements.SmallRadius * Math.Sin(angleInRadians);
+            double newStartXRounded = Math.Round(newStartX, 1);
+            double newStartYRounded = Math.Round(newStartY, 1);
+
+            // Calculate endpoint
+            double endX = centerX + length * Math.Cos(angleInRadians);
+            double endY = centerY + length * Math.Sin(angleInRadians);
+            double endXRounded = Math.Round(endX, 1);
+            double endYRounded = Math.Round(endY, 1);
+
+            HelperLine = new Line
+            {
+                StartPoint = new CSMath.XYZ(x: newStartXRounded, y: newStartYRounded, z: 0),
+                EndPoint = new CSMath.XYZ(endXRounded, endYRounded, 0)  // Indicated the middle of the LargeArc
+            };
+
+            // Calculate the angle increment for 2 cm along the arc
+            double arcLength = 20.0;
+            double radius = Measurements.LargeRadius; // Assuming this is the radius of the arc
+            double angleIncrement = arcLength / radius; // Angle in radians
+
+            // Calculate the new endpoint for the line 2 cm down along the arc
+            double newEndAngle = angleInRadians - angleIncrement; // Move down the arc
+            double newEndX = centerX + length * Math.Cos(newEndAngle);
+            double newEndY = centerY + length * Math.Sin(newEndAngle);
+            double newEndXRounded = Math.Round(newEndX, 1);
+            double newEndYRounded = Math.Round(newEndY, 1);
+
+            LabiaalLine = new Line
+            {
+                StartPoint = new CSMath.XYZ(x: newStartXRounded, y: newStartYRounded, z: 0),
+                EndPoint = new CSMath.XYZ(newEndXRounded, newEndYRounded, 0) // New endpoint 2 cm down the arc
+            };
+        }
+
         public double GetFurthestXPosition()
         {
             return Bottomline.EndPoint.X;
@@ -162,6 +215,10 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             {
                 block.Entities.Add(Key);
             }
+
+            // TODO: Remove?
+            block.Entities.Add(HelperLine);
+            block.Entities.Add(LabiaalLine);
 
             Insert insert = new Insert(block);
 
