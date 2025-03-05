@@ -16,7 +16,6 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
             PipeFootMeasurements measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height);
 
             // Assert
-            // Measurements
             Assert.Equal(expected: 206.2, actual: measurements.LengthSlantedSide);
             Assert.Equal(expected: 157.1, actual: measurements.LengthBottomDiameter);
             Assert.Equal(expected: 471.2, actual: measurements.LengthTopDiameter);
@@ -38,7 +37,6 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
             PipeFootMeasurements measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
 
             // Assert
-            // Measurements
             Assert.Equal(expected: 206.2, actual: measurements.LengthSlantedSide);
             Assert.Equal(expected: 147.7, actual: measurements.LengthBottomDiameter);
             Assert.Equal(expected: 461.8, actual: measurements.LengthTopDiameter);
