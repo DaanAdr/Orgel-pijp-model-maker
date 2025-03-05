@@ -184,7 +184,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
         private static PipeFootTemplate ConvertLabiaalPijpExcelToTemplate(LabiaalPijpExcel excelPipe, double xOffsetFromOrigin, double yOffsetFromOrigin)
         {
             double bottomDiameter = Math.Round(excelPipe.PlateWidthFoot / Math.PI, 1);
-            PipeFootMeasurements measurements = new PipeFootMeasurements(excelPipe.TopDiameter, bottomDiameter, excelPipe.Height, excelPipe.MetalThickness);
+            PipeFootMeasurements measurements = new PipeFootMeasurements(excelPipe.TopDiameter, bottomDiameter, excelPipe.Height, excelPipe.MetalThickness, excelPipe.LabiumWIdth);
 
             return new PipeFootTemplate(xOffsetFromOrigin, yOffsetFromOrigin, measurements, excelPipe.Key);
         }
