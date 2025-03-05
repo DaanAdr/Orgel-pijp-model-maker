@@ -2,7 +2,7 @@
 
 namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
 {
-    public class PipeFootTemplateTest
+    public class PipeFootTemplateTests
     {
         [Fact]
         public void DrawCadModel()
