@@ -46,21 +46,19 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
 
         private void btnCalculatePipeFootMeasurements_Click(object sender, RoutedEventArgs e)
         {
+            double metalThickness = 0;
+            double labiumWidth = 0;
             double topDiameter = double.Parse(txbTopDiameter.Text, CultureInfo.InvariantCulture);
             double bottomDiameter = double.Parse(txbBottomDiameter.Text, CultureInfo.InvariantCulture);
             double height = double.Parse(txbHeight.Text, CultureInfo.InvariantCulture);
             
             bool topAndBottomDiameterAreOuterDiameters = (bool)ckbIsOuterDiameter.IsChecked;
 
-            if(!(bool)ckbIsOuterDiameter.IsChecked)
-            {
-                _measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height);
-            }
-            else
-            {
-                double metalThickness = double.Parse(txbMetalThickness.Text, CultureInfo.InvariantCulture);
-                _measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
-            }
+            if((bool)ckbIsOuterDiameter.IsChecked) metalThickness = double.Parse(txbMetalThickness.Text, CultureInfo.InvariantCulture);
+
+            if ((bool)ckbLabiumWidth.IsChecked) labiumWidth = double.Parse(txbLabiumWIdth.Text, CultureInfo.InvariantCulture);
+
+            _measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness, labiumWidth);
 
             // Display calculated measurements
             txbLengthSlantedSide.Text = _measurements.LengthSlantedSide.ToString();

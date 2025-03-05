@@ -2,7 +2,7 @@
 {
     public class PipeFootMeasurements
     {
-        public double Height { get; }
+        public double Height { get; private set; }
         public double LengthSlantedSide { get; private set; }
         public double LengthBottomDiameter { get; private set; }
         public double LengthTopDiameter { get; private set; }

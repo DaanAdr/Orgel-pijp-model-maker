@@ -38,7 +38,11 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             }
 
             // TODO: Remove call to helper method?
-            DetermineLabiaalCutouts(centerpoint, measurements.CornerInDegrees, measurements.LargeRadius, measurements.SmallRadius);
+            // Check if markings for labiaum cutouts need to be rendered
+            if (measurements.LabiumWidth > 0.0)
+            {
+                DetermineLabiaalCutouts(centerpoint, measurements.CornerInDegrees, measurements.LargeRadius, measurements.SmallRadius, measurements.LabiumWidth);
+            }
         }
 
         /// <summary>
@@ -140,7 +144,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             };
         }
 
-        private void DetermineLabiaalCutouts(CSMath.XYZ centerpoint, double cornerInDegrees, double largeRadius, double smallRadius)
+        private void DetermineLabiaalCutouts(CSMath.XYZ centerpoint, double cornerInDegrees, double largeRadius, double smallRadius, double labiumWidth)
         {
             double centerX = centerpoint.X;
             double centerY = centerpoint.Y;
@@ -172,7 +176,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             double perpDirY = unitDirX;
 
             // Offset distance 
-            double offsetDistance = 20.0;
+            double offsetDistance = Math.Round(labiumWidth / 2, 1);
 
             // Calculate the new start and end points for LowerLabiaalLine
             double upperLabiaalLineEndX = centerLineEndX + perpDirX * offsetDistance;
@@ -224,9 +228,13 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
                 block.Entities.Add(Key);
             }
 
-            block.Entities.Add(LowerLabiaalLine);
-            block.Entities.Add(UpperLabiaalLine);
-
+            // Check if labium markings need to be rendered
+            if(UpperLabiaalLine != null && LowerLabiaalLine != null)
+            {
+                block.Entities.Add(LowerLabiaalLine);
+                block.Entities.Add(UpperLabiaalLine);
+            }
+            
             Insert insert = new Insert(block);
 
             doc.Entities.Add(insert);
