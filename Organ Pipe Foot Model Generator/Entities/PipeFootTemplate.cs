@@ -37,7 +37,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
                 DrawKey(key, measurements.LengthTopDiameter);
             }
 
-            // TODO: Remove call to helper method?
             // Check if markings for labiaum cutouts need to be rendered
             if (measurements.LabiumWidth > 0.0)
             {

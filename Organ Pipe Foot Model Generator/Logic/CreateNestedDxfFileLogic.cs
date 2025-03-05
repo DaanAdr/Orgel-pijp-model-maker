@@ -26,7 +26,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
             Dictionary<string, List<LabiaalPijpExcel>> octaves = GroupLabiaalPijpExcelByOctave(excelPipes);
 
             // Convert list of excel labiaal pijpen to list of PipeFootTemplate
-            // TODO: Octaves might have to be added in reverse order for better identification
             List<PipeFootTemplate> templatesForOctave = ConvertLabiaalPijpExcelToTemplateForAllOctaves(
                 octaves, 
                 horizontalObjectSeperationDistance, 

@@ -18,7 +18,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                     TopDiameter = 136.0,
                     PlateWidthFoot = 68.7,
                     Height = 210,
-                    MetalThickness = 1.4
+                    MetalThickness = 1.4,
+                    LabiumWIdth = 106
                 },
                 new LabiaalPijpExcel
                 {
@@ -26,7 +27,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                     TopDiameter = 105.6,
                     PlateWidthFoot = 61.5,
                     Height = 200,
-                    MetalThickness = 1.29
+                    MetalThickness = 1.29,
+                    LabiumWIdth = 82.2
                 },
                 // Minor
                 new LabiaalPijpExcel
@@ -35,7 +37,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                     TopDiameter = 68.8,
                     PlateWidthFoot = 51,
                     Height = 175,
-                    MetalThickness = 1.09
+                    MetalThickness = 1.09,
+                    LabiumWIdth = 53.4
                 },
                 new LabiaalPijpExcel
                 {
@@ -43,7 +46,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                     TopDiameter = 65.9,
                     PlateWidthFoot = 50.1,
                     Height = 175,
-                    MetalThickness = 1.06
+                    MetalThickness = 1.06,
+                    LabiumWIdth = 51.1
                 },
                 new LabiaalPijpExcel
                 {
@@ -51,7 +55,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                     TopDiameter = 63.1,
                     PlateWidthFoot = 49.2,
                     Height = 175,
-                    MetalThickness = 1.04
+                    MetalThickness = 1.04,
+                    LabiumWIdth = 48.9
                 },
                 new LabiaalPijpExcel
                 {
@@ -59,7 +64,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                     TopDiameter = 57.8,
                     PlateWidthFoot = 47.4,
                     Height = 175,
-                    MetalThickness = 0.99
+                    MetalThickness = 0.99,
+                    LabiumWIdth = 44.8
                 },
                 // 1st
                 new LabiaalPijpExcel
@@ -68,7 +74,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                     TopDiameter = 48.5,
                     PlateWidthFoot = 44,
                     Height = 175,
-                    MetalThickness = 0.9
+                    MetalThickness = 0.9,
+                    LabiumWIdth = 37.5
                 },
                 new LabiaalPijpExcel
                 {
@@ -76,7 +83,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                     TopDiameter = 46.4,
                     PlateWidthFoot = 43.1,
                     Height = 175,
-                    MetalThickness = 0.89
+                    MetalThickness = 0.89,
+                    LabiumWIdth = 35.9
                 },
                 // 2nd
                 new LabiaalPijpExcel
@@ -85,7 +93,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                     TopDiameter = 23.5,
                     PlateWidthFoot = 31.9,
                     Height = 175,
-                    MetalThickness = 0.75
+                    MetalThickness = 0.75,
+                    LabiumWIdth = 18.1
                 },
                 new LabiaalPijpExcel
                 {
@@ -93,7 +102,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                     TopDiameter = 22.6,
                     PlateWidthFoot = 31.5,
                     Height = 175,
-                    MetalThickness = 0.74
+                    MetalThickness = 0.74,
+                    LabiumWIdth = 17.4
                 },
                 // 3rd
                 new LabiaalPijpExcel
@@ -102,7 +112,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                     TopDiameter = 15.6,
                     PlateWidthFoot = 28.5,
                     Height = 175,
-                    MetalThickness = 0.69
+                    MetalThickness = 0.69,
+                    LabiumWIdth = 11.8
                 },
                 new LabiaalPijpExcel
                 {
@@ -110,7 +121,8 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                     TopDiameter = 14.5,
                     PlateWidthFoot = 28.1,
                     Height = 175,
-                    MetalThickness = 0.68
+                    MetalThickness = 0.68,
+                    LabiumWIdth = 11
                 },
             };
 
@@ -136,6 +148,7 @@ namespace Organ_Pipe_Foot_Model_Generator_Tests.UnitTests
                 Assert.Equal(expectedPipes[i].MetalThickness, pipesInCSV[i].MetalThickness);
                 Assert.Equal(expectedPipes[i].Height, pipesInCSV[i].Height);
                 Assert.Equal(expectedPipes[i].PlateWidthFoot, pipesInCSV[i].PlateWidthFoot);
+                Assert.Equal(expectedPipes[i].LabiumWIdth, pipesInCSV[i].LabiumWIdth);
             }
         }
     }
