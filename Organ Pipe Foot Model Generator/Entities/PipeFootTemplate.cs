@@ -10,11 +10,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public Arc SmallArc { get; private set; }
         public Arc LargeArc { get; private set; }
         public Line Slantedline { get; private set; }
-        public PipeFootMeasurements Measurements { get; private set; }
         private MText Key { get; set; }
-
-        // TODO: Remove helper property?
-        private Line HelperLine { get; set; }
         private Line LowerLabiaalLine { get; set; }
         private Line UpperLabiaalLine { get; set; }
 
@@ -23,32 +19,26 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         /// </summary>
         /// <param name="xOffsetFromOrigin">How far away from 0 on the X axis the model should be rendered</param>
         /// <param name="yOffsetFromOrigin">How far away from 0 on the Y axis the model should be rendered</param>
-        /// <param name="topDiameter">The length of the top of the frustum. Labeled T in Images/frustum.png</param>
-        /// <param name="bottomDiameter">The length of the bottom of the frustum. Labeled B in Images/frustum.png</param>
-        /// <param name="height">The height of the frustum. Labeled H in Images/frustum.png</param>
-        /// <param name="metalThickness">How thick the sheet metal for the pipe is, this has to be subtracted (twice) from the top- and bottomdiameter if the measurements are for the outerdiameter of the pipes</param>
-        public PipeFootTemplate(double xOffsetFromOrigin, double yOffsetFromOrigin, double topDiameter, double bottomDiameter, double height, double metalThickness = 0, string key = "")
+        public PipeFootTemplate(double xOffsetFromOrigin, double yOffsetFromOrigin, PipeFootMeasurements measurements, string key = "")
         {
-            Measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
-            
-            double endAngleInRadians = Measurements.CornerInDegrees * (Math.PI / 180);
+            double endAngleInRadians = measurements.CornerInDegrees * (Math.PI / 180);
 
-            DetermineBottomline(yOffsetFromOrigin, xOffsetFromOrigin);
+            DetermineBottomline(yOffsetFromOrigin, xOffsetFromOrigin, measurements.LengthSlantedSide);
 
-            CSMath.XYZ centerpoint = new CSMath.XYZ(x: Math.Round(Bottomline.StartPoint.X - Measurements.SmallRadius, 1), y: yOffsetFromOrigin, z: 0);
+            CSMath.XYZ centerpoint = new CSMath.XYZ(x: Math.Round(Bottomline.StartPoint.X - measurements.SmallRadius, 1), y: yOffsetFromOrigin, z: 0);
 
-            SmallArc = DetermineArc(Measurements.SmallRadius, endAngleInRadians, centerpoint);
-            LargeArc = DetermineArc(Measurements.LargeRadius, endAngleInRadians, centerpoint);
-            DetermineSlantedline(centerpoint);
+            SmallArc = DetermineArc(measurements.SmallRadius, endAngleInRadians, centerpoint);
+            LargeArc = DetermineArc(measurements.LargeRadius, endAngleInRadians, centerpoint);
+            DetermineSlantedline(centerpoint, measurements.CornerInDegrees, measurements.LargeRadius, measurements.SmallRadius);
 
             // Check if key should be added to the model
             if (!string.IsNullOrWhiteSpace(key))
             {
-                DrawKey(key);
+                DrawKey(key, measurements.LengthTopDiameter);
             }
 
             // TODO: Remove call to helper method?
-            DetermineLabiaalCutouts(centerpoint);
+            DetermineLabiaalCutouts(centerpoint, measurements.CornerInDegrees, measurements.LargeRadius, measurements.SmallRadius);
         }
 
         /// <summary>
@@ -56,10 +46,10 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         /// </summary>
         /// <param name="yOffsetFromOrigin">How far away from 0 on the Y axis the model should be rendered</param>
         /// <param name="xPositionForCenterpoint">The coordinates on the X axis for the centerpoint</param>
-        private void DetermineBottomline(double yOffsetFromOrigin, double xOffsetFromOrigin)
+        private void DetermineBottomline(double yOffsetFromOrigin, double xOffsetFromOrigin, double lengthSlantedSide)
         {
             double xStartPosition = xOffsetFromOrigin;
-            double xEndPosition = xStartPosition + Measurements.LengthSlantedSide;
+            double xEndPosition = xStartPosition + lengthSlantedSide;
 
             Bottomline = new Line
             {
@@ -90,19 +80,19 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         /// Determine the Start and End coordinates for the slanted line of the CAD model.
         /// </summary>
         /// <param name="centerpoint">The point around which the arcs are drawn for the CAD model</param>
-        private void DetermineSlantedline(CSMath.XYZ centerpoint)
+        private void DetermineSlantedline(CSMath.XYZ centerpoint, double cornerInDegrees, double largeRadius, double smallRadius)
         {
             double centerX = centerpoint.X;
             double centerY = centerpoint.Y;
-            double angleInDegrees = Measurements.CornerInDegrees;
-            double length = Measurements.LargeRadius;
+            double angleInDegrees = cornerInDegrees;
+            double length = largeRadius;
 
             // Convert angle to radians
             double angleInRadians = angleInDegrees * (Math.PI / 180);
 
             // Calculate new start point
-            double newStartX = centerX + Measurements.SmallRadius * Math.Cos(angleInRadians);
-            double newStartY = centerY + Measurements.SmallRadius * Math.Sin(angleInRadians);
+            double newStartX = centerX + smallRadius * Math.Cos(angleInRadians);
+            double newStartY = centerY + smallRadius * Math.Sin(angleInRadians);
             double newStartXRounded = Math.Round(newStartX, 1);
             double newStartYRounded = Math.Round(newStartY, 1);
 
@@ -119,11 +109,11 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             };
         }
 
-        private void DrawKey(string key)
+        private void DrawKey(string key, double lengthTopDiameter)
         {
             double xPosition = Bottomline.EndPoint.X;
             double lowestYPosition = Bottomline.EndPoint.Y;
-            double totalHeight = Measurements.LengthTopDiameter;
+            double totalHeight = lengthTopDiameter;
             double letterHeight;
             double letterY = lowestYPosition + 1;
 
@@ -150,18 +140,18 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             };
         }
 
-        private void DetermineLabiaalCutouts(CSMath.XYZ centerpoint)
+        private void DetermineLabiaalCutouts(CSMath.XYZ centerpoint, double cornerInDegrees, double largeRadius, double smallRadius)
         {
             double centerX = centerpoint.X;
             double centerY = centerpoint.Y;
-            double length = Measurements.LargeRadius;
+            double length = largeRadius;
 
             // Convert angle to radians
-            double angleInRadians = (Measurements.CornerInDegrees / 2) * (Math.PI / 180);
+            double angleInRadians = (cornerInDegrees / 2) * (Math.PI / 180);
 
             // Calculate new start point
-            double centerLineStartX = Math.Round(centerX + Measurements.SmallRadius * Math.Cos(angleInRadians), 1);
-            double centerLineStartY = Math.Round(centerY + Measurements.SmallRadius * Math.Sin(angleInRadians), 1);
+            double centerLineStartX = Math.Round(centerX + smallRadius * Math.Cos(angleInRadians), 1);
+            double centerLineStartY = Math.Round(centerY + smallRadius * Math.Sin(angleInRadians), 1);
 
             // Calculate endpoint
             double centerLineEndX = Math.Round(centerX + length * Math.Cos(angleInRadians), 1);

@@ -17,7 +17,7 @@
         /// <param name="bottomDiameter">The length of the bottom of the frustum. Labeled B in Images/frustum.png</param>
         /// <param name="height">The height of the frustum. Labeled H in Images/frustum.png</param>
         /// <param name="metalThickness">How thick the sheet metal for the pipe is, this has to be subtracted (twice) from the top- and bottomdiameter if the measurements are for the outerdiameter of the pipes</param>
-        public PipeFootMeasurements(double topDiameter, double bottomDiameter, double height, double metalThickness)
+        public PipeFootMeasurements(double topDiameter, double bottomDiameter, double height, double metalThickness = 0)
         {
             topDiameter = Math.Round(topDiameter - (metalThickness * 2), 1);
             bottomDiameter = Math.Round(bottomDiameter - (metalThickness * 2), 1);

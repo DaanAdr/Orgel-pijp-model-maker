@@ -14,7 +14,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
     /// </summary>
     public partial class CreateOne : UserControl
     {
-        private PipeFootTemplate _template;
+        private PipeFootMeasurements _measurements;
 
         public CreateOne()
         {
@@ -54,24 +54,21 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
 
             if(!(bool)ckbIsOuterDiameter.IsChecked)
             {
-                _template = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height);
+                _measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height);
             }
             else
             {
                 double metalThickness = double.Parse(txbMetalThickness.Text, CultureInfo.InvariantCulture);
-
-                _template = new PipeFootTemplate(100, 100, topDiameter, bottomDiameter, height, metalThickness);
+                _measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
             }
 
-            PipeFootMeasurements pipeFootMeasurements = _template.Measurements;
-
             // Display calculated measurements
-            txbLengthSlantedSide.Text = pipeFootMeasurements.LengthSlantedSide.ToString();
-            txbLengthInnerDiameter.Text = pipeFootMeasurements.LengthBottomDiameter.ToString();
-            txbLengthOuterDiameter.Text = pipeFootMeasurements.LengthTopDiameter.ToString();
-            txbSmallRadius.Text = pipeFootMeasurements.SmallRadius.ToString();
-            txbLargeRadius.Text = pipeFootMeasurements.LargeRadius.ToString();
-            txbCornerDegrees.Text = pipeFootMeasurements.CornerInDegrees.ToString();
+            txbLengthSlantedSide.Text = _measurements.LengthSlantedSide.ToString();
+            txbLengthInnerDiameter.Text = _measurements.LengthBottomDiameter.ToString();
+            txbLengthOuterDiameter.Text = _measurements.LengthTopDiameter.ToString();
+            txbSmallRadius.Text = _measurements.SmallRadius.ToString();
+            txbLargeRadius.Text = _measurements.LargeRadius.ToString();
+            txbCornerDegrees.Text = _measurements.CornerInDegrees.ToString();
 
             btnSaveModel.IsEnabled = true;
         }
@@ -94,10 +91,13 @@ namespace Organ_Pipe_Foot_Model_Generator.Views
                 filePath = saveFileDialog.FileName; // Return the selected file path
             }
 
+            // Create the CAD model
+            PipeFootTemplate model = new PipeFootTemplate(100, 100, _measurements);
+
             // Add the insert into a document
             CadDocument doc = new CadDocument();
 
-            _template.AddToCadDocument(doc);
+            model.AddToCadDocument(doc);
 
             // Save the document using DxfWriter
             using (DxfWriter writer = new DxfWriter(filePath, doc, false))
