@@ -15,15 +15,19 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         [Name("uitw diam")]
         [TypeConverter(typeof(NullableDoubleConverter))]    // Converts text from CSV file to double
         public required double TopDiameter { get; set; }
+
         [Name("vt.lngt")]
         [TypeConverter(typeof(NullableDoubleConverter))]
         public required double Height { get; set; }
+
         [Name("pl.br.vt")]
         [TypeConverter(typeof(NullableDoubleConverter))]
         public required double PlateWidthFoot { get; set; }
+
         [Name("wd.vt")]
         [TypeConverter(typeof(NullableDoubleConverter))]
         public required double MetalThickness { get; set; }
+
         [Name("labbr")]
         [TypeConverter(typeof(NullableDoubleConverter))]
         public required double LabiumWIdth { get; set; }

@@ -7,8 +7,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
         /// <summary>
         /// Check if the given string contains only numbers. Unfortunately, this still allows whitespace to pass through
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public static bool InputIsNumericOnly(string input)
         {
             Regex _regex = new Regex("[^0-9.-]+");

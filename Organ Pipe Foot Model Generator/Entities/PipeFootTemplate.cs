@@ -11,14 +11,16 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public Arc LargeArc { get; private set; }
         public Line Slantedline { get; private set; }
         private MText Key { get; set; }
-        private Line LowerLabiaalLine { get; set; }
-        private Line UpperLabiaalLine { get; set; }
+        private Line LowerLabiumMarking { get; set; }
+        private Line UpperLabiumMarking { get; set; }
 
         /// <summary>
         /// A representation for a CAD model for a pipe foot
         /// </summary>
         /// <param name="xOffsetFromOrigin">How far away from 0 on the X axis the model should be rendered</param>
         /// <param name="yOffsetFromOrigin">How far away from 0 on the Y axis the model should be rendered</param>
+        /// <param name="measurements">The PipeFootMeasurements that can be used to render the model</param>
+        /// <param name="key">The musical key the pipe is intended to play. This wil be written in the lower right corner of the model</param>
         public PipeFootTemplate(double xOffsetFromOrigin, double yOffsetFromOrigin, PipeFootMeasurements measurements, string key = "")
         {
             double endAngleInRadians = measurements.CornerInDegrees * (Math.PI / 180);
@@ -40,15 +42,13 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             // Check if markings for labiaum cutouts need to be rendered
             if (measurements.LabiumWidth > 0.0)
             {
-                DetermineLabiaalCutouts(centerpoint, measurements.CornerInDegrees, measurements.LargeRadius, measurements.SmallRadius, measurements.LabiumWidth);
+                DetermineLabiumMarkings(centerpoint, measurements.CornerInDegrees, measurements.LargeRadius, measurements.SmallRadius, measurements.LabiumWidth);
             }
         }
 
         /// <summary>
         /// Determine the Start and End coordinates for the bottomline of the CAD model. This line is parallel to the X axis.
         /// </summary>
-        /// <param name="yOffsetFromOrigin">How far away from 0 on the Y axis the model should be rendered</param>
-        /// <param name="xPositionForCenterpoint">The coordinates on the X axis for the centerpoint</param>
         private void DetermineBottomline(double yOffsetFromOrigin, double xOffsetFromOrigin, double lengthSlantedSide)
         {
             double xStartPosition = xOffsetFromOrigin;
@@ -64,10 +64,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         /// <summary>
         /// Creates and Arc object that can be used in CAD models
         /// </summary>
-        /// <param name="radius">The radius (straal in Dutch) for the arc</param>
-        /// <param name="endAngleInRadians">The angle (in radians) at which the arc should stop. The arc automatically starts a 0</param>
-        /// <param name="centerpoint">The point around which the arcs are drawn for the CAD model</param>
-        /// <returns></returns>
         private Arc DetermineArc(double radius, double endAngleInRadians, CSMath.XYZ centerpoint)
         {
             return new Arc
@@ -82,7 +78,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         /// <summary>
         /// Determine the Start and End coordinates for the slanted line of the CAD model.
         /// </summary>
-        /// <param name="centerpoint">The point around which the arcs are drawn for the CAD model</param>
         private void DetermineSlantedline(CSMath.XYZ centerpoint, double cornerInDegrees, double largeRadius, double smallRadius)
         {
             double centerX = centerpoint.X;
@@ -112,6 +107,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             };
         }
 
+        /// <summary>
+        /// Determine where the key should be drawn on the model
+        /// </summary>
         private void DrawKey(string key, double lengthTopDiameter)
         {
             double xPosition = Bottomline.EndPoint.X;
@@ -143,7 +141,10 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             };
         }
 
-        private void DetermineLabiaalCutouts(CSMath.XYZ centerpoint, double cornerInDegrees, double largeRadius, double smallRadius, double labiumWidth)
+        /// <summary>
+        /// Determine the Start and End coordinates for both Labium markings
+        /// </summary>
+        private void DetermineLabiumMarkings(CSMath.XYZ centerpoint, double cornerInDegrees, double largeRadius, double smallRadius, double labiumWidth)
         {
             double centerX = centerpoint.X;
             double centerY = centerpoint.Y;
@@ -186,7 +187,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             double upperLabiaalLineStartY = upperLabiaalLineEndY - (3 * unitDirY);
 
             // Create the UpperLabiaalLine
-            UpperLabiaalLine = new Line
+            UpperLabiumMarking = new Line
             {
                 StartPoint = new CSMath.XYZ(x: Math.Round(upperLabiaalLineStartX, 1), y: Math.Round(upperLabiaalLineStartY, 1), z: 0),
                 EndPoint = new CSMath.XYZ(x: Math.Round(upperLabiaalLineEndX, 1), y: Math.Round(upperLabiaalLineEndY, 1), z: 0) // New endpoint parallel to HelperLine
@@ -201,7 +202,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             double lowerLabiaalLineStartY = lowerLabiaalLineEndY - (3 * unitDirY);
 
             // Create the UpperLabiaalLine
-            LowerLabiaalLine = new Line
+            LowerLabiumMarking = new Line
             {
                 StartPoint = new CSMath.XYZ(x: Math.Round(lowerLabiaalLineStartX, 1), y: Math.Round(lowerLabiaalLineStartY, 1), z: 0),
                 EndPoint = new CSMath.XYZ(x: Math.Round(lowerLabiaalLineEndX, 1), y: Math.Round(lowerLabiaalLineEndY, 1), z: 0) // New endpoint parallel to HelperLine
@@ -228,10 +229,10 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             }
 
             // Check if labium markings need to be rendered
-            if(UpperLabiaalLine != null && LowerLabiaalLine != null)
+            if(UpperLabiumMarking != null && LowerLabiumMarking != null)
             {
-                block.Entities.Add(LowerLabiaalLine);
-                block.Entities.Add(UpperLabiaalLine);
+                block.Entities.Add(LowerLabiumMarking);
+                block.Entities.Add(UpperLabiumMarking);
             }
             
             Insert insert = new Insert(block);
