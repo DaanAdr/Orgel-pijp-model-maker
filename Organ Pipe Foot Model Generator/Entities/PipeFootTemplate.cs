@@ -6,13 +6,15 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 {
     public class PipeFootTemplate
     {
+        private Frustum Frustum { get; set; }
+        private Rectangle Rectangle { get; set; }
+
+
         public Line Bottomline { get; private set; }
-        public Arc SmallArc { get; private set; }
-        public Arc LargeArc { get; private set; }
-        public Line Slantedline { get; private set; }
+        
         private MText Key { get; set; }
-        private Line LowerLabiumMarking { get; set; }
-        private Line UpperLabiumMarking { get; set; }
+        //private Line LowerLabiumMarking { get; set; }
+        //private Line UpperLabiumMarking { get; set; }
 
         /// <summary>
         /// A representation for a CAD model for a pipe foot
@@ -23,38 +25,41 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         /// <param name="key">The musical key the pipe is intended to play. This wil be written in the lower right corner of the model</param>
         public PipeFootTemplate(double xOffsetFromOrigin, double yOffsetFromOrigin, PipeFootMeasurements measurements, string key = "")
         {
-            double endAngleInRadians = measurements.CornerInDegrees * (Math.PI / 180);
+            // Determine bottom line, as this is present in both frustum and rectangle modes
+            Bottomline = DetermineBottomline(yOffsetFromOrigin, xOffsetFromOrigin, measurements.LengthSlantedSide);
 
-            DetermineBottomline(yOffsetFromOrigin, xOffsetFromOrigin, measurements.LengthSlantedSide);
-
-            CSMath.XYZ centerpoint = new CSMath.XYZ(x: Math.Round(Bottomline.StartPoint.X - measurements.SmallRadius, 1), y: yOffsetFromOrigin, z: 0);
-
-            SmallArc = DetermineArc(measurements.SmallRadius, endAngleInRadians, centerpoint);
-            LargeArc = DetermineArc(measurements.LargeRadius, endAngleInRadians, centerpoint);
-            DetermineSlantedline(centerpoint, measurements.CornerInDegrees, measurements.LargeRadius, measurements.SmallRadius);
+            // Check if Top- and BottomDiameter are the same length, if not create a frustum
+            if(measurements.LengthTopDiameter != measurements.LengthBottomDiameter)
+            {
+                Frustum = new Frustum(measurements, Bottomline);
+            }
+            else
+            {
+                Rectangle = new Rectangle(Bottomline, measurements.LengthTopDiameter);
+            }
 
             // Check if key should be added to the model
             if (!string.IsNullOrWhiteSpace(key))
             {
-                DrawKey(key, measurements.LengthTopDiameter);
+                Key = DrawKey(key, measurements.LengthTopDiameter);
             }
 
-            // Check if markings for labiaum cutouts need to be rendered
-            if (measurements.LabiumWidth > 0.0)
-            {
-                DetermineLabiumMarkings(centerpoint, measurements.CornerInDegrees, measurements.LargeRadius, measurements.SmallRadius, measurements.LabiumWidth);
-            }
+            //// Check if markings for labiaum cutouts need to be rendered
+            //if (measurements.LabiumWidth > 0.0)
+            //{
+            //    DetermineLabiumMarkings(centerpoint, measurements.CornerInDegrees, measurements.LargeRadius, measurements.SmallRadius, measurements.LabiumWidth);
+            //}
         }
 
         /// <summary>
         /// Determine the Start and End coordinates for the bottomline of the CAD model. This line is parallel to the X axis.
         /// </summary>
-        private void DetermineBottomline(double yOffsetFromOrigin, double xOffsetFromOrigin, double lengthSlantedSide)
+        private Line DetermineBottomline(double yOffsetFromOrigin, double xOffsetFromOrigin, double lengthSlantedSide)
         {
             double xStartPosition = xOffsetFromOrigin;
             double xEndPosition = xStartPosition + lengthSlantedSide;
 
-            Bottomline = new Line
+            return new Line
             {
                 StartPoint = new CSMath.XYZ(x: xStartPosition, y: yOffsetFromOrigin, z: 0),
                 EndPoint = new CSMath.XYZ(xEndPosition, yOffsetFromOrigin, 0)
@@ -62,55 +67,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         }
 
         /// <summary>
-        /// Creates and Arc object that can be used in CAD models
-        /// </summary>
-        private Arc DetermineArc(double radius, double endAngleInRadians, CSMath.XYZ centerpoint)
-        {
-            return new Arc
-            {
-                Center = centerpoint,
-                Radius = radius,
-                StartAngle = 0, // Arcs always start at 0
-                EndAngle = endAngleInRadians
-            };
-        }
-
-        /// <summary>
-        /// Determine the Start and End coordinates for the slanted line of the CAD model.
-        /// </summary>
-        private void DetermineSlantedline(CSMath.XYZ centerpoint, double cornerInDegrees, double largeRadius, double smallRadius)
-        {
-            double centerX = centerpoint.X;
-            double centerY = centerpoint.Y;
-            double angleInDegrees = cornerInDegrees;
-            double length = largeRadius;
-
-            // Convert angle to radians
-            double angleInRadians = angleInDegrees * (Math.PI / 180);
-
-            // Calculate new start point
-            double newStartX = centerX + smallRadius * Math.Cos(angleInRadians);
-            double newStartY = centerY + smallRadius * Math.Sin(angleInRadians);
-            double newStartXRounded = Math.Round(newStartX, 1);
-            double newStartYRounded = Math.Round(newStartY, 1);
-
-            // Calculate endpoint
-            double endX = centerX + length * Math.Cos(angleInRadians);
-            double endY = centerY + length * Math.Sin(angleInRadians);
-            double endXRounded = Math.Round(endX, 1);
-            double endYRounded = Math.Round(endY, 1);
-
-            Slantedline = new Line
-            {
-                StartPoint = new CSMath.XYZ(x: newStartXRounded, y: newStartYRounded, z: 0),
-                EndPoint = new CSMath.XYZ(endXRounded, endYRounded, 0)
-            };
-        }
-
-        /// <summary>
         /// Determine where the key should be drawn on the model
         /// </summary>
-        private void DrawKey(string key, double lengthTopDiameter)
+        private MText DrawKey(string key, double lengthTopDiameter)
         {
             double xPosition = Bottomline.EndPoint.X;
             double lowestYPosition = Bottomline.EndPoint.Y;
@@ -133,7 +92,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             double estimatedWidth = averageCharacterWidth * key.Length;
             double letterX = Math.Round(xPosition - (estimatedWidth + 1), 1);
 
-            Key = new MText
+            return new MText
             {
                 Height = letterHeight,
                 Value = key,
@@ -187,11 +146,11 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             double upperLabiaalLineStartY = upperLabiaalLineEndY - (3 * unitDirY);
 
             // Create the UpperLabiaalLine
-            UpperLabiumMarking = new Line
-            {
-                StartPoint = new CSMath.XYZ(x: Math.Round(upperLabiaalLineStartX, 1), y: Math.Round(upperLabiaalLineStartY, 1), z: 0),
-                EndPoint = new CSMath.XYZ(x: Math.Round(upperLabiaalLineEndX, 1), y: Math.Round(upperLabiaalLineEndY, 1), z: 0) // New endpoint parallel to HelperLine
-            };
+            //UpperLabiumMarking = new Line
+            //{
+            //    StartPoint = new CSMath.XYZ(x: Math.Round(upperLabiaalLineStartX, 1), y: Math.Round(upperLabiaalLineStartY, 1), z: 0),
+            //    EndPoint = new CSMath.XYZ(x: Math.Round(upperLabiaalLineEndX, 1), y: Math.Round(upperLabiaalLineEndY, 1), z: 0) // New endpoint parallel to HelperLine
+            //};
 
             // Calculate the new start and end points for LowerLabiaalLine
             double lowerLabiaalLineEndX = centerLineEndX - perpDirX * offsetDistance;
@@ -202,11 +161,11 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             double lowerLabiaalLineStartY = lowerLabiaalLineEndY - (3 * unitDirY);
 
             // Create the UpperLabiaalLine
-            LowerLabiumMarking = new Line
-            {
-                StartPoint = new CSMath.XYZ(x: Math.Round(lowerLabiaalLineStartX, 1), y: Math.Round(lowerLabiaalLineStartY, 1), z: 0),
-                EndPoint = new CSMath.XYZ(x: Math.Round(lowerLabiaalLineEndX, 1), y: Math.Round(lowerLabiaalLineEndY, 1), z: 0) // New endpoint parallel to HelperLine
-            };
+            //LowerLabiumMarking = new Line
+            //{
+            //    StartPoint = new CSMath.XYZ(x: Math.Round(lowerLabiaalLineStartX, 1), y: Math.Round(lowerLabiaalLineStartY, 1), z: 0),
+            //    EndPoint = new CSMath.XYZ(x: Math.Round(lowerLabiaalLineEndX, 1), y: Math.Round(lowerLabiaalLineEndY, 1), z: 0) // New endpoint parallel to HelperLine
+            //};
         }
 
         public double GetFurthestXPosition()
@@ -214,30 +173,59 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             return Bottomline.EndPoint.X;
         }
 
+        public double GetHighestYPosition()
+        {
+            // Determine what models needs to be draw
+            if (Rectangle != null)
+            {
+                return Rectangle.Topline.StartPoint.Y;
+            }
+
+            return Frustum.Slantedline.EndPoint.Y;
+        }
+
         public void AddToCadDocument(CadDocument doc)
         {
             BlockRecord block = new BlockRecord(Guid.NewGuid().ToString());
             block.Entities.Add(Bottomline);
-            block.Entities.Add(SmallArc);
-            block.Entities.Add(LargeArc);
-            block.Entities.Add(Slantedline);
+
+            // Determine what models needs to be draw
+            if (Frustum != null)
+            {
+                block.Entities.Add(Frustum.SmallArc);
+                block.Entities.Add(Frustum.LargeArc);
+                block.Entities.Add(Frustum.Slantedline);
+            }
+            else
+            {
+                block.Entities.Add(Rectangle.Topline);
+                block.Entities.Add(Rectangle.Leftline);
+                block.Entities.Add(Rectangle.Rightline);
+            }
 
             // Check if the key need to be added
-            if(Key !=  null)
+            if (Key != null)
             {
                 block.Entities.Add(Key);
             }
 
-            // Check if labium markings need to be rendered
-            if(UpperLabiumMarking != null && LowerLabiumMarking != null)
-            {
-                block.Entities.Add(LowerLabiumMarking);
-                block.Entities.Add(UpperLabiumMarking);
-            }
-            
+            //// Check if labium markings need to be rendered
+            //if(UpperLabiumMarking != null && LowerLabiumMarking != null)
+            //{
+            //    block.Entities.Add(LowerLabiumMarking);
+            //    block.Entities.Add(UpperLabiumMarking);
+            //}
+
             Insert insert = new Insert(block);
 
             doc.Entities.Add(insert);
+        }
+
+        public object GetModelInformationForTesting()
+        {
+            if (Rectangle != null) return Rectangle;
+
+            return Frustum;
         }
     }
 }
