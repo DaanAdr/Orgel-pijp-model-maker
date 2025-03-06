@@ -133,7 +133,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
                 templates.AddRange(templatesForOctave);
 
                 // Update previousObjectYPosition
-                previousObjectYPosition = templatesForOctave[0].Slantedline.EndPoint.Y;
+                previousObjectYPosition = templatesForOctave[0].GetHighestYPosition();
             }
 
             return templates;
