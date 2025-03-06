@@ -35,7 +35,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             }
             else
             {
-                Rectangle = new Rectangle(Bottomline, measurements.LengthTopDiameter);
+                Rectangle = new Rectangle(Bottomline, measurements.LengthTopDiameter, measurements.LabiumWidth);
             }
 
             // Check if key should be added to the model
@@ -201,6 +201,13 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
                 block.Entities.Add(Rectangle.Topline);
                 block.Entities.Add(Rectangle.Leftline);
                 block.Entities.Add(Rectangle.Rightline);
+
+                // Check if labium markings need to be rendered
+                if (Rectangle.UpperLabiumMarking != null && Rectangle.LowerLabiumMarking != null)
+                {
+                    block.Entities.Add(Rectangle.UpperLabiumMarking);
+                    block.Entities.Add(Rectangle.LowerLabiumMarking);
+                }
             }
 
             // Check if the key need to be added
@@ -208,13 +215,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             {
                 block.Entities.Add(Key);
             }
-
-            //// Check if labium markings need to be rendered
-            //if(UpperLabiumMarking != null && LowerLabiumMarking != null)
-            //{
-            //    block.Entities.Add(LowerLabiumMarking);
-            //    block.Entities.Add(UpperLabiumMarking);
-            //}
 
             Insert insert = new Insert(block);
 
