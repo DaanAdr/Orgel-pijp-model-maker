@@ -7,8 +7,12 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
     public class PipeFootTemplate
     {
         private Frustum Frustum { get; set; }
+        private Rectangle Rectangle { get; set; }
+
+
         private Line Bottomline { get; set; }
-        //private MText Key { get; set; }
+        
+        private MText Key { get; set; }
         //private Line LowerLabiumMarking { get; set; }
         //private Line UpperLabiumMarking { get; set; }
 
@@ -29,14 +33,16 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             {
                 Frustum = new Frustum(measurements, Bottomline);
             }
+            else
+            {
+                Rectangle = new Rectangle(Bottomline, measurements.LengthTopDiameter);
+            }
 
-
-            
-            //// Check if key should be added to the model
-            //if (!string.IsNullOrWhiteSpace(key))
-            //{
-            //    DrawKey(key, measurements.LengthTopDiameter);
-            //}
+            // Check if key should be added to the model
+            if (!string.IsNullOrWhiteSpace(key))
+            {
+                Key = DrawKey(key, measurements.LengthTopDiameter);
+            }
 
             //// Check if markings for labiaum cutouts need to be rendered
             //if (measurements.LabiumWidth > 0.0)
@@ -63,7 +69,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         /// <summary>
         /// Determine where the key should be drawn on the model
         /// </summary>
-        private void DrawKey(string key, double lengthTopDiameter)
+        private MText DrawKey(string key, double lengthTopDiameter)
         {
             double xPosition = Bottomline.EndPoint.X;
             double lowestYPosition = Bottomline.EndPoint.Y;
@@ -86,12 +92,12 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             double estimatedWidth = averageCharacterWidth * key.Length;
             double letterX = Math.Round(xPosition - (estimatedWidth + 1), 1);
 
-            //Key = new MText
-            //{
-            //    Height = letterHeight,
-            //    Value = key,
-            //    InsertPoint = new CSMath.XYZ(letterX, letterY, 0)
-            //};
+            return new MText
+            {
+                Height = letterHeight,
+                Value = key,
+                InsertPoint = new CSMath.XYZ(letterX, letterY, 0)
+            };
         }
 
         /// <summary>
@@ -170,13 +176,12 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public double GetHighestYPosition()
         {
             // Determine what models needs to be draw
-            if (Frustum != null)
+            if (Rectangle != null)
             {
-                return Frustum.Slantedline.EndPoint.Y;
+                return Rectangle.Topline.StartPoint.Y;
             }
 
-            // Temporary return variable
-            return 0.0;
+            return Frustum.Slantedline.EndPoint.Y;
         }
 
         public void AddToCadDocument(CadDocument doc)
@@ -191,12 +196,18 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
                 block.Entities.Add(Frustum.LargeArc);
                 block.Entities.Add(Frustum.Slantedline);
             }
+            else
+            {
+                block.Entities.Add(Rectangle.Topline);
+                block.Entities.Add(Rectangle.Leftline);
+                block.Entities.Add(Rectangle.Rightline);
+            }
 
-            //// Check if the key need to be added
-            //if(Key !=  null)
-            //{
-            //    block.Entities.Add(Key);
-            //}
+            // Check if the key need to be added
+            if (Key != null)
+            {
+                block.Entities.Add(Key);
+            }
 
             //// Check if labium markings need to be rendered
             //if(UpperLabiumMarking != null && LowerLabiumMarking != null)
@@ -204,7 +215,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             //    block.Entities.Add(LowerLabiumMarking);
             //    block.Entities.Add(UpperLabiumMarking);
             //}
-            
+
             Insert insert = new Insert(block);
 
             doc.Entities.Add(insert);
