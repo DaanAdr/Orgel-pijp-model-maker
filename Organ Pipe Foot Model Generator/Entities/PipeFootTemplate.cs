@@ -13,8 +13,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         public Line Bottomline { get; private set; }
         
         private MText Key { get; set; }
-        //private Line LowerLabiumMarking { get; set; }
-        //private Line UpperLabiumMarking { get; set; }
 
         /// <summary>
         /// A representation for a CAD model for a pipe foot
@@ -100,74 +98,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             };
         }
 
-        /// <summary>
-        /// Determine the Start and End coordinates for both Labium markings
-        /// </summary>
-        private void DetermineLabiumMarkings(CSMath.XYZ centerpoint, double cornerInDegrees, double largeRadius, double smallRadius, double labiumWidth)
-        {
-            double centerX = centerpoint.X;
-            double centerY = centerpoint.Y;
-            double length = largeRadius;
-
-            // Convert angle to radians
-            double angleInRadians = (cornerInDegrees / 2) * (Math.PI / 180);
-
-            // Calculate new start point
-            double centerLineStartX = Math.Round(centerX + smallRadius * Math.Cos(angleInRadians), 1);
-            double centerLineStartY = Math.Round(centerY + smallRadius * Math.Sin(angleInRadians), 1);
-
-            // Calculate endpoint
-            double centerLineEndX = Math.Round(centerX + length * Math.Cos(angleInRadians), 1);
-            double centerLineEndY = Math.Round(centerY + length * Math.Sin(angleInRadians), 1);
-
-            // LowerLabialLine
-            // Calculate the direction vector of HelperLine
-            double dirX = centerLineEndX - centerLineStartX;
-            double dirY = centerLineEndY - centerLineStartY;
-
-            // Normalize the direction vector using Pythagoras Theorum
-            double lengthDir = Math.Sqrt(dirX * dirX + dirY * dirY);
-            double unitDirX = dirX / lengthDir;
-            double unitDirY = dirY / lengthDir;
-
-            // Calculate the perpendicular direction vector (rotate by 90 degrees)
-            double perpDirX = -unitDirY; // Rotate counter-clockwise
-            double perpDirY = unitDirX;
-
-            // Offset distance 
-            double offsetDistance = Math.Round(labiumWidth / 2, 1);
-
-            // Calculate the new start and end points for LowerLabiaalLine
-            double upperLabiaalLineEndX = centerLineEndX + perpDirX * offsetDistance;
-            double upperLabiaalLineEndY = centerLineEndY + perpDirY * offsetDistance;
-
-            // Calculate the start point for UpperLabiaalLine by moving back 3 mm along the direction of HelperLine
-            double upperLabiaalLineStartX = upperLabiaalLineEndX - (3 * unitDirX);
-            double upperLabiaalLineStartY = upperLabiaalLineEndY - (3 * unitDirY);
-
-            // Create the UpperLabiaalLine
-            //UpperLabiumMarking = new Line
-            //{
-            //    StartPoint = new CSMath.XYZ(x: Math.Round(upperLabiaalLineStartX, 1), y: Math.Round(upperLabiaalLineStartY, 1), z: 0),
-            //    EndPoint = new CSMath.XYZ(x: Math.Round(upperLabiaalLineEndX, 1), y: Math.Round(upperLabiaalLineEndY, 1), z: 0) // New endpoint parallel to HelperLine
-            //};
-
-            // Calculate the new start and end points for LowerLabiaalLine
-            double lowerLabiaalLineEndX = centerLineEndX - perpDirX * offsetDistance;
-            double lowerLabiaalLineEndY = centerLineEndY - perpDirY * offsetDistance;
-
-            // Calculate the start point for UpperLabiaalLine by moving back 3 mm along the direction of HelperLine
-            double lowerLabiaalLineStartX = lowerLabiaalLineEndX - (3 * unitDirX);
-            double lowerLabiaalLineStartY = lowerLabiaalLineEndY - (3 * unitDirY);
-
-            // Create the UpperLabiaalLine
-            //LowerLabiumMarking = new Line
-            //{
-            //    StartPoint = new CSMath.XYZ(x: Math.Round(lowerLabiaalLineStartX, 1), y: Math.Round(lowerLabiaalLineStartY, 1), z: 0),
-            //    EndPoint = new CSMath.XYZ(x: Math.Round(lowerLabiaalLineEndX, 1), y: Math.Round(lowerLabiaalLineEndY, 1), z: 0) // New endpoint parallel to HelperLine
-            //};
-        }
-
         public double GetFurthestXPosition()
         {
             return Bottomline.EndPoint.X;
@@ -195,6 +125,13 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
                 block.Entities.Add(Frustum.SmallArc);
                 block.Entities.Add(Frustum.LargeArc);
                 block.Entities.Add(Frustum.Slantedline);
+
+                // Check if labium markings need to be rendered
+                if (Frustum.UpperLabiumMarking != null && Frustum.LowerLabiumMarking != null)
+                {
+                    block.Entities.Add(Frustum.UpperLabiumMarking);
+                    block.Entities.Add(Frustum.LowerLabiumMarking);
+                }
             }
             else
             {
