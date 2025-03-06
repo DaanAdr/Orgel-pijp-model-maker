@@ -10,7 +10,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         private Rectangle Rectangle { get; set; }
 
 
-        private Line Bottomline { get; set; }
+        public Line Bottomline { get; private set; }
         
         private MText Key { get; set; }
         //private Line LowerLabiumMarking { get; set; }
@@ -219,6 +219,13 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             Insert insert = new Insert(block);
 
             doc.Entities.Add(insert);
+        }
+
+        public object GetModelInformationForTesting()
+        {
+            if (Rectangle != null) return Rectangle;
+
+            return Frustum;
         }
     }
 }
