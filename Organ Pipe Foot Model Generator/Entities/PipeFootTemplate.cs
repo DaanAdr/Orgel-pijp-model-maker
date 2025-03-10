@@ -41,12 +41,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             {
                 Key = DrawKey(key, measurements.LengthTopDiameter);
             }
-
-            //// Check if markings for labiaum cutouts need to be rendered
-            //if (measurements.LabiumWidth > 0.0)
-            //{
-            //    DetermineLabiumMarkings(centerpoint, measurements.CornerInDegrees, measurements.LargeRadius, measurements.SmallRadius, measurements.LabiumWidth);
-            //}
         }
 
         /// <summary>

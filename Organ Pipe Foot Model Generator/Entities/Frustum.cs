@@ -1,4 +1,5 @@
 ﻿using ACadSharp.Entities;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Organ_Pipe_Foot_Model_Generator.Entities
 {
@@ -82,28 +83,34 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         {
             double centerX = centerpoint.X;
             double centerY = centerpoint.Y;
-            double length = largeRadius;
+
+            // Determine cutout length
+            int cutoutLength = 3;
+            int test = (int)(cornerInDegrees / 10);
+
+            if (test > cutoutLength) cutoutLength = test;
 
             // Convert angle to radians
             double angleInRadians = (cornerInDegrees / 2) * (Math.PI / 180);
 
+            #region Centerline
             // Calculate new start point
             double centerLineStartX = Math.Round(centerX + smallRadius * Math.Cos(angleInRadians), 1);
             double centerLineStartY = Math.Round(centerY + smallRadius * Math.Sin(angleInRadians), 1);
 
             // Calculate endpoint
-            double centerLineEndX = Math.Round(centerX + length * Math.Cos(angleInRadians), 1);
-            double centerLineEndY = Math.Round(centerY + length * Math.Sin(angleInRadians), 1);
+            double centerLineEndX = Math.Round(centerX + largeRadius * Math.Cos(angleInRadians), 1);
+            double centerLineEndY = Math.Round(centerY + largeRadius * Math.Sin(angleInRadians), 1);
+            #endregion
 
-            // LowerLabialLine
-            // Calculate the direction vector of HelperLine
-            double dirX = centerLineEndX - centerLineStartX;
-            double dirY = centerLineEndY - centerLineStartY;
+            // Calculate the direction vector of Centerline
+            double vectorXAxis = centerLineEndX - centerLineStartX;
+            double vectorYAxis = centerLineEndY - centerLineStartY;
 
             // Normalize the direction vector using Pythagoras Theorum
-            double lengthDir = Math.Sqrt(dirX * dirX + dirY * dirY);
-            double unitDirX = dirX / lengthDir;
-            double unitDirY = dirY / lengthDir;
+            double lengthDir = Math.Sqrt(vectorXAxis * vectorXAxis + vectorYAxis * vectorYAxis); // Length of the centerline
+            double unitDirX = vectorXAxis / lengthDir;      // Have a length of 1 but the direction of the centerline
+            double unitDirY = vectorYAxis / lengthDir;
 
             // Calculate the perpendicular direction vector (rotate by 90 degrees)
             double perpDirX = -unitDirY; // Rotate counter-clockwise
@@ -112,13 +119,15 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             // Offset distance 
             double offsetDistance = Math.Round(labiumWidth / 2, 1);
 
+            // TODO: Determine if the lines need to be + or -
+
             // Calculate the new start and end points for LowerLabiaalLine
             double upperLabiaalLineEndX = centerLineEndX + perpDirX * offsetDistance;
             double upperLabiaalLineEndY = centerLineEndY + perpDirY * offsetDistance;
 
             // Calculate the start point for UpperLabiaalLine by moving back 3 mm along the direction of HelperLine
-            double upperLabiaalLineStartX = upperLabiaalLineEndX - (3 * unitDirX);
-            double upperLabiaalLineStartY = upperLabiaalLineEndY - (3 * unitDirY);
+            double upperLabiaalLineStartX = upperLabiaalLineEndX - (cutoutLength * unitDirX);
+            double upperLabiaalLineStartY = upperLabiaalLineEndY - (cutoutLength * unitDirY);
 
             // Create the UpperLabiaalLine
             UpperLabiumMarking = new Line
@@ -132,8 +141,8 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             double lowerLabiaalLineEndY = centerLineEndY - perpDirY * offsetDistance;
 
             // Calculate the start point for UpperLabiaalLine by moving back 3 mm along the direction of HelperLine
-            double lowerLabiaalLineStartX = lowerLabiaalLineEndX - (3 * unitDirX);
-            double lowerLabiaalLineStartY = lowerLabiaalLineEndY - (3 * unitDirY);
+            double lowerLabiaalLineStartX = lowerLabiaalLineEndX - (cutoutLength * unitDirX);
+            double lowerLabiaalLineStartY = lowerLabiaalLineEndY - (cutoutLength * unitDirY);
 
             // Create the UpperLabiaalLine
             LowerLabiumMarking = new Line
