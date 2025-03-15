@@ -5,50 +5,94 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Organ_Pipe_Foot_Model_Generator.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="550" d:DesignWidth="800">
     <Grid>
-        <!--#region User input-->
-        <Label x:Name="lblTopDiameter" Content="Bovendiameter (T):" HorizontalAlignment="Left" Margin="13,18,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbTopDiameter" HorizontalAlignment="Left" Margin="180,22,0,0" TextWrapping="Wrap" Text="150" VerticalAlignment="Top" Width="120" PreviewTextInput="txbTopDiameter_PreviewTextInput"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-        <Label x:Name="lblBottomDiameter" Content="Onderdiameter (B):" HorizontalAlignment="Left" Margin="13,44,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.504,1.427"/>
-        <TextBox x:Name="txbBottomDiameter" HorizontalAlignment="Left" Margin="180,48,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="120" PreviewTextInput="txbBottomDiameter_PreviewTextInput"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
 
-        <Label x:Name="lblHeight" Content="Hoogte (H):" HorizontalAlignment="Left" Margin="13,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.46,-0.923"/>
-        <TextBox x:Name="txbHeight" HorizontalAlignment="Left" Margin="180,74,0,0" TextWrapping="Wrap" Text="200" VerticalAlignment="Top" Width="120" PreviewTextInput="txbHeight_PreviewTextInput"/>
+        <!--#region Required input-->
+        <!-- Top Diameter -->
+        <Label x:Name="lblTopDiameter" Content="Bovendiameter (T):" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
+        <TextBox x:Name="txbTopDiameter" HorizontalAlignment="Left" Margin="2" TextWrapping="Wrap" Text="150" VerticalAlignment="Top" Width="120" PreviewTextInput="txbTopDiameter_PreviewTextInput" Grid.Column="1" Grid.Row="0"/>
+        
+        <!-- Bottom Diameter -->
+        <Label x:Name="lblBottomDiameter" Content="Onderdiameter (B):" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center" RenderTransformOrigin="0.504,1.427" Grid.Column="0" Grid.Row="1"/>
+        <TextBox x:Name="txbBottomDiameter" HorizontalAlignment="Left" Margin="2" TextWrapping="Wrap" Text="50" VerticalAlignment="Center" Width="120" PreviewTextInput="txbBottomDiameter_PreviewTextInput" Grid.Column="1" Grid.Row="1"/>
+        
+        <!-- Height -->
+        <Label x:Name="lblHeight" Content="Hoogte (H):" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center" RenderTransformOrigin="0.46,-0.923" Grid.Column="0" Grid.Row="2"/>
+        <TextBox x:Name="txbHeight" HorizontalAlignment="Left" Margin="2" TextWrapping="Wrap" Text="200" VerticalAlignment="Center" Width="120" PreviewTextInput="txbHeight_PreviewTextInput" Grid.Column="1" Grid.Row="2"/>
+        <!--#endregion-->
+        
+        <!--#region Additional input-->
+        <!-- Metal Thickness -->
+        <CheckBox x:Name="ckbIsOuterDiameter" Content="Boven- en Onderdiameters zijn buitendiameters" HorizontalAlignment="Left" Margin="2,16,0,0" VerticalAlignment="Top" IsChecked="True" Click="ckbIsOuterDiameter_Click" Grid.Row="3" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblMetalThickness" Content="Wand dikte:" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
+        <TextBox x:Name="txbMetalThickness" HorizontalAlignment="Left" Margin="2" TextWrapping="Wrap" Text="1.5" VerticalAlignment="Center" Width="120" PreviewTextInput="txbMetalThickness_PreviewTextInput" Grid.Column="1" Grid.Row="4"/>
 
-        <CheckBox x:Name="ckbIsOuterDiameter" Content="Boven- en Onderdiameters zijn buitendiameters" HorizontalAlignment="Left" Margin="13,124,0,0" VerticalAlignment="Top" IsChecked="True" Click="ckbIsOuterDiameter_Click"/>
+        <!-- Labium Width -->
+        <CheckBox x:Name="ckbLabiumWidth" Content="Markeer labium" HorizontalAlignment="Left" Margin="2,16,0,0" VerticalAlignment="Top" Grid.Row="5" Grid.ColumnSpan="2"/>
 
-        <Label x:Name="lblMetalThickness" Content="Wand dikte:" HorizontalAlignment="Left" Margin="13,146,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbMetalThickness" HorizontalAlignment="Left" Margin="180,150,0,0" TextWrapping="Wrap" Text="1.5" VerticalAlignment="Top" Width="120" PreviewTextInput="txbMetalThickness_PreviewTextInput"/>
-
-        <Button x:Name="btnCalculatePipeFootMeasurements" Content="Bereken resterende maten" HorizontalAlignment="Left" Margin="6,185,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.631,2.724" Click="btnCalculatePipeFootMeasurements_Click"/>
-
-        <Image x:Name="imgFrustum" HorizontalAlignment="Left" Height="175" Margin="379,22,0,0" VerticalAlignment="Top" Width="Auto" Source="/Images/frustum.png" />
+        <Label x:Name="lblLabiumWidth" Content="Labium breedte:" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
+        <TextBox x:Name="txbLabiumWIdth" HorizontalAlignment="Left" Margin="2" TextWrapping="Wrap" Text="20" VerticalAlignment="Center" Width="120" Grid.Column="1" Grid.Row="6"/>
+        
+        <!-- Button -->
+        <Button x:Name="btnCalculatePipeFootMeasurements" Content="Bereken resterende maten" HorizontalAlignment="Left" Margin="2,16,0,36" VerticalAlignment="Center" RenderTransformOrigin="0.631,2.724" Click="btnCalculatePipeFootMeasurements_Click" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2"/>
         <!--#endregion-->
 
         <!--#region Values to be calculated-->
-        <Label x:Name="lblLengthSlantedSide" Content="Lengte schuine zijde (R):" HorizontalAlignment="Left" Margin="10,248,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbLengthSlantedSide" HorizontalAlignment="Left" Margin="177,252,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-
-        <Label x:Name="lblLengthInnerDiameter" Content="Lengte onderdiameter (L):" HorizontalAlignment="Left" Margin="10,274,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbLengthInnerDiameter" HorizontalAlignment="Left" Margin="177,278,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="true"/>
-
-        <Label x:Name="lblLengthOuterDiameter" Content="Lengte bovendiameter (M):" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbLengthOuterDiameter" HorizontalAlignment="Left" Margin="177,304,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="true"/>
-
-        <Label x:Name="lblSmallRadius" Content="Kleine radius/straal (P):" HorizontalAlignment="Left" Margin="10,326,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbSmallRadius" HorizontalAlignment="Left" Margin="177,330,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-
-        <Label x:Name="lblLargeRadius" Content="Grote radius/straal (Q):" HorizontalAlignment="Left" Margin="10,352,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbLargeRadius" HorizontalAlignment="Left" Margin="177,356,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-
-        <Label x:Name="lblCornerDegrees" Content="Graden hoek (A):" HorizontalAlignment="Left" Margin="10,378,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txbCornerDegrees" HorizontalAlignment="Left" Margin="177,382,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-
-        <Button x:Name="btnSaveModel" Content="Model opslaan" HorizontalAlignment="Left" Margin="10,420,0,0" VerticalAlignment="Top" Click="btnSaveModel_Click" IsEnabled="False"/>
-
-        <Image x:Name="imgTemplate" HorizontalAlignment="Left" Height="175" Margin="379,229,0,0" VerticalAlignment="Top" Width="Auto" Source="/Images/template.png"/>
+        <!-- Length Slanted Side -->
+        <Label x:Name="lblLengthSlantedSide" Content="Lengte schuine zijde (R):" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"/>
+        <TextBox x:Name="txbLengthSlantedSide" HorizontalAlignment="Left" Margin="2" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="120" IsReadOnly="True" Grid.Column="1" Grid.Row="8"/>
+        
+        <!-- Length Inner Diameter -->
+        <Label x:Name="lblLengthInnerDiameter" Content="Lengte onderdiameter (L):" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9"/>
+        <TextBox x:Name="txbLengthInnerDiameter" HorizontalAlignment="Left" Margin="2" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="120" IsReadOnly="true" Grid.Column="1" Grid.Row="9"/>
+        
+        <!-- Length Outer Diameter -->
+        <Label x:Name="lblLengthOuterDiameter" Content="Lengte bovendiameter (M):" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center" Grid.Column="0" Grid.Row="10"/>
+        <TextBox x:Name="txbLengthOuterDiameter" HorizontalAlignment="Left" Margin="2" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="120" IsReadOnly="true" Grid.Column="1" Grid.Row="10"/>
+        
+        <!-- Small Radius -->
+        <Label x:Name="lblSmallRadius" Content="Kleine radius/straal (P):" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center" Grid.Column="0" Grid.Row="11"/>
+        <TextBox x:Name="txbSmallRadius" HorizontalAlignment="Left" Margin="2" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="120" IsReadOnly="True" Grid.Column="1" Grid.Row="11"/>
+        
+        <!-- Large Radius -->
+        <Label x:Name="lblLargeRadius" Content="Grote radius/straal (Q):" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center" Grid.Column="0" Grid.Row="12"/>
+        <TextBox x:Name="txbLargeRadius" HorizontalAlignment="Left" Margin="2" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="120" IsReadOnly="True" Grid.Column="1" Grid.Row="12"/>
+        
+        <!-- Corner in Degrees -->
+        <Label x:Name="lblCornerDegrees" Content="Graden hoek (A):" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center" Grid.Column="0" Grid.Row="13"/>
+        <TextBox x:Name="txbCornerDegrees" HorizontalAlignment="Left" Margin="2" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="120" IsReadOnly="True" Grid.Column="1" Grid.Row="13"/>
+        
+        <!-- Save Button -->
+        <Button x:Name="btnSaveModel" Content="Model opslaan" HorizontalAlignment="Left" Margin="2,16,0,0" VerticalAlignment="Top" Click="btnSaveModel_Click" IsEnabled="False" Grid.Column="0" Grid.Row="14" Grid.ColumnSpan="2"/>
+        <!--#endregion-->
+        
+        <!--#region Images-->
+        <Image x:Name="imgFrustum" HorizontalAlignment="Center" Height="175" Margin="75,0,0,0" VerticalAlignment="Center" Width="Auto" Source="/Images/frustum.png"  Grid.Column="2" Grid.Row="0" Grid.RowSpan="7"/>
+        <Image x:Name="imgTemplate" HorizontalAlignment="Left" Height="175" Margin="75,0,0,0" VerticalAlignment="Top" Width="Auto" Source="/Images/template.png" Grid.Column="2" Grid.Row="8" Grid.RowSpan="7"/>
         <!--#endregion-->
     </Grid>
 </UserControl>

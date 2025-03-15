@@ -26,7 +26,6 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
             Dictionary<string, List<LabiaalPijpExcel>> octaves = GroupLabiaalPijpExcelByOctave(excelPipes);
 
             // Convert list of excel labiaal pijpen to list of PipeFootTemplate
-            // TODO: Octaves might have to be added in reverse order for better identification
             List<PipeFootTemplate> templatesForOctave = ConvertLabiaalPijpExcelToTemplateForAllOctaves(
                 octaves, 
                 horizontalObjectSeperationDistance, 
@@ -134,7 +133,7 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
                 templates.AddRange(templatesForOctave);
 
                 // Update previousObjectYPosition
-                previousObjectYPosition = templatesForOctave[0].Slantedline.EndPoint.Y;
+                previousObjectYPosition = templatesForOctave[0].GetHighestYPosition();
             }
 
             return templates;
@@ -184,17 +183,9 @@ namespace Organ_Pipe_Foot_Model_Generator.Logic
         private static PipeFootTemplate ConvertLabiaalPijpExcelToTemplate(LabiaalPijpExcel excelPipe, double xOffsetFromOrigin, double yOffsetFromOrigin)
         {
             double bottomDiameter = Math.Round(excelPipe.PlateWidthFoot / Math.PI, 1);
+            PipeFootMeasurements measurements = new PipeFootMeasurements(excelPipe.TopDiameter, bottomDiameter, excelPipe.Height, excelPipe.MetalThickness, excelPipe.LabiumWIdth);
 
-            PipeFootTemplate template = new PipeFootTemplate(
-                xOffsetFromOrigin, 
-                yOffsetFromOrigin, 
-                excelPipe.TopDiameter, 
-                bottomDiameter, 
-                excelPipe.Height, 
-                excelPipe.MetalThickness
-            );
-
-            return template;
+            return new PipeFootTemplate(xOffsetFromOrigin, yOffsetFromOrigin, measurements, excelPipe.Key);
         }
     }
 }

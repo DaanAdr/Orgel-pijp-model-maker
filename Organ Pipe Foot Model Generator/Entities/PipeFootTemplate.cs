@@ -6,47 +6,52 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
 {
     public class PipeFootTemplate
     {
+        private Frustum Frustum { get; set; }
+        private Rectangle Rectangle { get; set; }
+
+
         public Line Bottomline { get; private set; }
-        public Arc SmallArc { get; private set; }
-        public Arc LargeArc { get; private set; }
-        public Line Slantedline { get; private set; }
-        public PipeFootMeasurements Measurements { get; private set; }
+        
+        private MText Key { get; set; }
 
         /// <summary>
         /// A representation for a CAD model for a pipe foot
         /// </summary>
         /// <param name="xOffsetFromOrigin">How far away from 0 on the X axis the model should be rendered</param>
         /// <param name="yOffsetFromOrigin">How far away from 0 on the Y axis the model should be rendered</param>
-        /// <param name="topDiameter">The length of the top of the frustum. Labeled T in Images/frustum.png</param>
-        /// <param name="bottomDiameter">The length of the bottom of the frustum. Labeled B in Images/frustum.png</param>
-        /// <param name="height">The height of the frustum. Labeled H in Images/frustum.png</param>
-        /// <param name="metalThickness">How thick the sheet metal for the pipe is, this has to be subtracted (twice) from the top- and bottomdiameter if the measurements are for the outerdiameter of the pipes</param>
-        public PipeFootTemplate(double xOffsetFromOrigin, double yOffsetFromOrigin, double topDiameter, double bottomDiameter, double height, double metalThickness = 0)
+        /// <param name="measurements">The PipeFootMeasurements that can be used to render the model</param>
+        /// <param name="key">The musical key the pipe is intended to play. This wil be written in the lower right corner of the model</param>
+        public PipeFootTemplate(double xOffsetFromOrigin, double yOffsetFromOrigin, PipeFootMeasurements measurements, string key = "")
         {
-            Measurements = new PipeFootMeasurements(topDiameter, bottomDiameter, height, metalThickness);
-            
-            double endAngleInRadians = Measurements.CornerInDegrees * (Math.PI / 180);
+            // Determine bottom line, as this is present in both frustum and rectangle modes
+            Bottomline = DetermineBottomline(yOffsetFromOrigin, xOffsetFromOrigin, measurements.LengthSlantedSide);
 
-            DetermineBottomline(yOffsetFromOrigin, xOffsetFromOrigin);
+            // Check if Top- and BottomDiameter are the same length, if not create a frustum
+            if(measurements.LengthTopDiameter != measurements.LengthBottomDiameter)
+            {
+                Frustum = new Frustum(measurements, Bottomline);
+            }
+            else
+            {
+                Rectangle = new Rectangle(Bottomline, measurements.LengthTopDiameter, measurements.LabiumWidth);
+            }
 
-            CSMath.XYZ centerpoint = new CSMath.XYZ(x: Math.Round(Bottomline.StartPoint.X - Measurements.SmallRadius, 1), y: yOffsetFromOrigin, z: 0);
-
-            SmallArc = DetermineArc(Measurements.SmallRadius, endAngleInRadians, centerpoint);
-            LargeArc = DetermineArc(Measurements.LargeRadius, endAngleInRadians, centerpoint);
-            DetermineSlantedline(centerpoint);
+            // Check if key should be added to the model
+            if (!string.IsNullOrWhiteSpace(key))
+            {
+                Key = DrawKey(key, measurements.LengthTopDiameter);
+            }
         }
 
         /// <summary>
         /// Determine the Start and End coordinates for the bottomline of the CAD model. This line is parallel to the X axis.
         /// </summary>
-        /// <param name="yOffsetFromOrigin">How far away from 0 on the Y axis the model should be rendered</param>
-        /// <param name="xPositionForCenterpoint">The coordinates on the X axis for the centerpoint</param>
-        private void DetermineBottomline(double yOffsetFromOrigin, double xOffsetFromOrigin)
+        private Line DetermineBottomline(double yOffsetFromOrigin, double xOffsetFromOrigin, double lengthSlantedSide)
         {
             double xStartPosition = xOffsetFromOrigin;
-            double xEndPosition = xStartPosition + Measurements.LengthSlantedSide;
+            double xEndPosition = xStartPosition + lengthSlantedSide;
 
-            Bottomline = new Line
+            return new Line
             {
                 StartPoint = new CSMath.XYZ(x: xStartPosition, y: yOffsetFromOrigin, z: 0),
                 EndPoint = new CSMath.XYZ(xEndPosition, yOffsetFromOrigin, 0)
@@ -54,53 +59,36 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
         }
 
         /// <summary>
-        /// Creates and Arc object that can be used in CAD models
+        /// Determine where the key should be drawn on the model
         /// </summary>
-        /// <param name="radius">The radius (straal in Dutch) for the arc</param>
-        /// <param name="endAngleInRadians">The angle (in radians) at which the arc should stop. The arc automatically starts a 0</param>
-        /// <param name="centerpoint">The point around which the arcs are drawn for the CAD model</param>
-        /// <returns></returns>
-        private Arc DetermineArc(double radius, double endAngleInRadians, CSMath.XYZ centerpoint)
+        private MText DrawKey(string key, double lengthTopDiameter)
         {
-            return new Arc
+            double xPosition = Bottomline.EndPoint.X;
+            double lowestYPosition = Bottomline.EndPoint.Y;
+            double totalHeight = lengthTopDiameter;
+            double letterHeight;
+            double letterY = lowestYPosition + 1;
+
+            // Lock letter height to 1 cm if the total height 
+            if(totalHeight >= 17)
             {
-                Center = centerpoint,
-                Radius = radius,
-                StartAngle = 0, // Arcs always start at 0
-                EndAngle = endAngleInRadians
-            };
-        }
-
-        /// <summary>
-        /// Determine the Start and End coordinates for the slanted line of the CAD model.
-        /// </summary>
-        /// <param name="centerpoint">The point around which the arcs are drawn for the CAD model</param>
-        private void DetermineSlantedline(CSMath.XYZ centerpoint)
-        {
-            double centerX = centerpoint.X;
-            double centerY = centerpoint.Y;
-            double angleInDegrees = Measurements.CornerInDegrees;
-            double length = Measurements.LargeRadius;
-
-            // Convert angle to radians
-            double angleInRadians = angleInDegrees * (Math.PI / 180);
-
-            // Calculate new start point
-            double newStartX = centerX + Measurements.SmallRadius * Math.Cos(angleInRadians);
-            double newStartY = centerY + Measurements.SmallRadius * Math.Sin(angleInRadians);
-            double newStartXRounded = Math.Round(newStartX, 1);
-            double newStartYRounded = Math.Round(newStartY, 1);
-
-            // Calculate endpoint
-            double endX = centerX + length * Math.Cos(angleInRadians);
-            double endY = centerY + length * Math.Sin(angleInRadians);
-            double endXRounded = Math.Round(endX, 1);
-            double endYRounded = Math.Round(endY, 1);
-
-            Slantedline = new Line
+                letterHeight = 15;
+            }
+            else
             {
-                StartPoint = new CSMath.XYZ(x: newStartXRounded, y: newStartYRounded, z: 0),
-                EndPoint = new CSMath.XYZ(endXRounded, endYRounded, 0)
+                letterHeight = totalHeight - 2;
+            }
+
+            // Estimate text width (average width per character can vary)
+            double averageCharacterWidth = letterHeight * 0.25; // Adjust this factor as needed
+            double estimatedWidth = averageCharacterWidth * key.Length;
+            double letterX = Math.Round(xPosition - (estimatedWidth + 1), 1);
+
+            return new MText
+            {
+                Height = letterHeight,
+                Value = key,
+                InsertPoint = new CSMath.XYZ(letterX, letterY, 0)
             };
         }
 
@@ -109,17 +97,66 @@ namespace Organ_Pipe_Foot_Model_Generator.Entities
             return Bottomline.EndPoint.X;
         }
 
+        public double GetHighestYPosition()
+        {
+            // Determine what models needs to be draw
+            if (Rectangle != null)
+            {
+                return Rectangle.Topline.StartPoint.Y;
+            }
+
+            return Frustum.Slantedline.EndPoint.Y;
+        }
+
         public void AddToCadDocument(CadDocument doc)
         {
             BlockRecord block = new BlockRecord(Guid.NewGuid().ToString());
             block.Entities.Add(Bottomline);
-            block.Entities.Add(SmallArc);
-            block.Entities.Add(LargeArc);
-            block.Entities.Add(Slantedline);
+
+            // Determine what models needs to be draw
+            if (Frustum != null)
+            {
+                block.Entities.Add(Frustum.SmallArc);
+                block.Entities.Add(Frustum.LargeArc);
+                block.Entities.Add(Frustum.Slantedline);
+
+                // Check if labium markings need to be rendered
+                if (Frustum.UpperLabiumMarking != null && Frustum.LowerLabiumMarking != null)
+                {
+                    block.Entities.Add(Frustum.UpperLabiumMarking);
+                    block.Entities.Add(Frustum.LowerLabiumMarking);
+                }
+            }
+            else
+            {
+                block.Entities.Add(Rectangle.Topline);
+                block.Entities.Add(Rectangle.Leftline);
+                block.Entities.Add(Rectangle.Rightline);
+
+                // Check if labium markings need to be rendered
+                if (Rectangle.UpperLabiumMarking != null && Rectangle.LowerLabiumMarking != null)
+                {
+                    block.Entities.Add(Rectangle.UpperLabiumMarking);
+                    block.Entities.Add(Rectangle.LowerLabiumMarking);
+                }
+            }
+
+            // Check if the key need to be added
+            if (Key != null)
+            {
+                block.Entities.Add(Key);
+            }
 
             Insert insert = new Insert(block);
 
             doc.Entities.Add(insert);
+        }
+
+        public object GetModelInformationForTesting()
+        {
+            if (Rectangle != null) return Rectangle;
+
+            return Frustum;
         }
     }
 }
